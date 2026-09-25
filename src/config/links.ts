@@ -18,24 +18,24 @@
  */
 
 export const LINKS = {
-  // 10 VIDEO YOUTUBE DỰ ÁN HỌC TẬP 11A8
-  youtube1: 'PASTE_REAL_LINK_HERE', // Video 01: Video giới thiệu dự án & Nhóm Công nghệ 11A8
-  youtube2: 'PASTE_REAL_LINK_HERE', // Video 02: Video dự án - Phân tích văn học & giá trị tác phẩm
-  youtube3: 'PASTE_REAL_LINK_HERE', // Video 03: Trích đoạn phim - Chiếc lược ngà & Phim ảnh Nam Bộ
-  youtube4: 'PASTE_REAL_LINK_HERE', // Video 04: Video ngắn (Shorts) - Điểm chạm văn học cô đọng
-  youtube5: 'PASTE_REAL_LINK_HERE', // Video 05: Nội dung sáng tạo - Góc nhìn học sinh 11A8
-  youtube6: 'PASTE_REAL_LINK_HERE', // Video 06: Thuyết trình nhóm - Báo cáo chuyên đề tác giả
-  youtube7: 'PASTE_REAL_LINK_HERE', // Video 07: Tư liệu lịch sử & Nam Bộ - Bối cảnh ĐBSCL
-  youtube8: 'PASTE_REAL_LINK_HERE', // Video 08: Sản phẩm truyền thông - Phỏng vấn & hậu trường
-  youtube9: 'PASTE_REAL_LINK_HERE', // Video 09: Audio kịch truyền thanh - Diễn đọc tác phẩm
-  youtube10: 'PASTE_REAL_LINK_HERE', // Video 10: Tổng kết & Triển lãm số - Toàn cảnh dự án
+  // 10 LIÊN KẾT DỰ ÁN HỌC TẬP 11A8
+  youtube1: 'https://www.youtube.com/watch?si=mQkxiqPx67i6vodz&v=YkQeufm_9F4&feature=youtu.be', // Dòng Sông Hát
+  youtube2: 'https://youtu.be/Z0qMeik5uKs',                                                      // Thời Thơ Ấu
+  youtube3: 'https://youtu.be/YKt4ydFBAgw?si=mfkm2ctYXAlqxN8l',                                  // Như Một Huyền Thoại
+  youtube4: 'https://youtu.be/3brwmGxGLQw',                                                      // Mùa Nước Nổi
+  youtube5: 'https://youtu.be/RGOVhz-jg1M',                                                      // Cho Đến Bao Giờ
+  youtube6: 'https://youtu.be/T2MJY6r3s7A',                                                      // Mùa Gió Chướng
+  youtube7: 'https://youtu.be/t1l6vvN8jdk',                                                      // Cánh Đồng Hoang
+  youtube8: 'https://youtube.com/shorts/v5XX04i5ALQ?si=jGSk1FsxnMQSvq9s',                        // Chiếc Lược Ngà (Shorts)
+  youtube9: 'https://youtu.be/SQ46_GbxUFg',                                                      // Tiểu sử tác giả Nguyễn Quang Sáng
+  youtube10: 'https://drive.google.com/drive/folders/1IuM37E89dpx4NB6mEnqAobGtpAdY_Pcd?usp=sharing', // Hình Ảnh Đẹp 11A8
 
   // CÁC NỀN TẢNG MẠNG XÃ HỘI, BẢNG TIN TƯƠNG TÁC & TÀI NGUYÊN BỔ TRỢ
-  tiktok: 'PASTE_REAL_LINK_HERE',       // Kênh TikTok nhóm 11A8
-  facebook: 'PASTE_REAL_LINK_HERE',     // Trang Facebook nhóm học tập 11A8
-  padlet: 'PASTE_REAL_LINK_HERE',       // Không gian bảng tin Padlet tương tác thảo luận mở
-  imageGallery: 'PASTE_REAL_LINK_HERE', // Kho ảnh lưu niệm / Google Drive / Triển lãm số
-  resourceDrive: 'PASTE_REAL_LINK_HERE', // Thư mục tài liệu số hóa Ngữ văn 11
+  tiktok: 'https://www.tiktok.com',
+  facebook: 'https://www.facebook.com',
+  padlet: 'https://padlet.com/amhuy112/goc-e-lai-loi-nhan-s023wsnts1b1n9a6z305',
+  imageGallery: 'https://drive.google.com/drive/folders/1IuM37E89dpx4NB6mEnqAobGtpAdY_Pcd?usp=sharing',
+  resourceDrive: 'https://drive.google.com/drive/folders/1IuM37E89dpx4NB6mEnqAobGtpAdY_Pcd?usp=sharing',
 };
 
 /**
@@ -69,14 +69,14 @@ export interface ProjectLinkItem {
 }
 
 export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
-  // HÀNG 1: YOUTUBE 01 | YOUTUBE 02 | YOUTUBE 03
+  // HÀNG 1: 01 | 02 | 03
   {
     id: 'link-01',
     order: 1,
     platform: 'YouTube',
     category: 'youtube',
-    title: 'YOUTUBE 01',
-    description: 'Video giới thiệu',
+    title: 'Dòng Sông Hát',
+    description: 'Dòng Sông Hát',
     tagline: 'Giới thiệu dự án & Nhóm Công nghệ 11A8',
     url: LINKS.youtube1,
     placeholderPrompt: 'DÁN LINK YOUTUBE 01',
@@ -92,7 +92,7 @@ export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
     order: 2,
     platform: 'YouTube',
     category: 'youtube',
-    title: 'YOUTUBE 02',
+    title: 'Thời Thơ Ấu',
     description: 'Video dự án',
     tagline: 'Phân tích văn học & giá trị tác phẩm',
     url: LINKS.youtube2,
@@ -109,7 +109,7 @@ export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
     order: 3,
     platform: 'YouTube',
     category: 'youtube',
-    title: 'YOUTUBE 03',
+    title: 'Như Một Huyền Thoại',
     description: 'Trích đoạn phim',
     tagline: 'Chiếc lược ngà & Phim ảnh Nam Bộ',
     url: LINKS.youtube3,
@@ -122,13 +122,13 @@ export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
     },
   },
 
-  // HÀNG 2: YOUTUBE 04 | YOUTUBE 05 | YOUTUBE 06
+  // HÀNG 2: 04 | 05 | 06
   {
     id: 'link-04',
     order: 4,
     platform: 'YouTube',
     category: 'youtube',
-    title: 'YOUTUBE 04',
+    title: 'Mùa Nước Nổi',
     description: 'Video ngắn (Shorts)',
     tagline: 'Điểm chạm văn học cô đọng & súc tích',
     url: LINKS.youtube4,
@@ -145,7 +145,7 @@ export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
     order: 5,
     platform: 'YouTube',
     category: 'youtube',
-    title: 'YOUTUBE 05',
+    title: 'Cho Đến Bao Giờ',
     description: 'Nội dung sáng tạo',
     tagline: 'Góc nhìn học sinh 11A8 về Nguyễn Quang Sáng',
     url: LINKS.youtube5,
@@ -162,8 +162,8 @@ export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
     order: 6,
     platform: 'YouTube',
     category: 'youtube',
-    title: 'YOUTUBE 06',
-    description: 'Thuyết trình nhóm',
+    title: 'Mùa Gió Chướng',
+    description: 'T',
     tagline: 'Báo cáo chuyên đề nghiên cứu tác giả',
     url: LINKS.youtube6,
     placeholderPrompt: 'DÁN LINK YOUTUBE 06',
@@ -175,13 +175,13 @@ export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
     },
   },
 
-  // HÀNG 3: YOUTUBE 07 | YOUTUBE 08 | YOUTUBE 09 | YOUTUBE 10
+  // HÀNG 3: 07 | 08 | 09 | 10
   {
     id: 'link-07',
     order: 7,
     platform: 'YouTube',
     category: 'youtube',
-    title: 'YOUTUBE 07',
+    title: 'Cánh Đồng Hoang',
     description: 'Tư liệu lịch sử & Nam Bộ',
     tagline: 'Bối cảnh Đồng bằng sông Cửu Long',
     url: LINKS.youtube7,
@@ -198,7 +198,7 @@ export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
     order: 8,
     platform: 'YouTube',
     category: 'youtube',
-    title: 'YOUTUBE 08',
+    title: 'Chiếc Lược Ngà',
     description: 'Sản phẩm truyền thông',
     tagline: 'Phỏng vấn, hậu trường & quá trình làm việc nhóm',
     url: LINKS.youtube8,
@@ -215,7 +215,7 @@ export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
     order: 9,
     platform: 'YouTube',
     category: 'youtube',
-    title: 'YOUTUBE 09',
+    title: 'Tiểu sử tác giả Nguyễn Quang Sáng',
     description: 'Audio kịch truyền thanh',
     tagline: 'Diễn đọc trích đoạn truyện ngắn truyền cảm',
     url: LINKS.youtube9,
@@ -230,13 +230,13 @@ export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
   {
     id: 'link-10',
     order: 10,
-    platform: 'YouTube',
+    platform: 'Drive',
     category: 'youtube',
-    title: 'YOUTUBE 10',
+    title: 'Hình Ảnh Đẹp 11A8',
     description: 'Tổng kết & Triển lãm số',
     tagline: 'Toàn cảnh kết quả học tập dự án Ngữ văn 11A8',
     url: LINKS.youtube10,
-    placeholderPrompt: 'DÁN LINK YOUTUBE 10',
+    placeholderPrompt: 'DÁN LINK 10',
     colorTheme: {
       accent: 'from-red-600 to-orange-500',
       border: 'hover:border-red-500/50',

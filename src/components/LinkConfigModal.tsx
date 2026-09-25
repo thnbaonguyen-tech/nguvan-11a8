@@ -169,14 +169,29 @@ export const LinkConfigModal: React.FC<LinkConfigModalProps> = ({
 
         {/* Modal Footer Controls */}
         <div className="p-6 border-t border-white/10 bg-slate-900/80 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <button
-            onClick={handleResetToDefault}
-            type="button"
-            className="inline-flex items-center gap-2 text-xs text-slate-400 hover:text-rose-400 transition-colors"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>Khôi phục liên kết mặc định</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleResetToDefault}
+              type="button"
+              className="inline-flex items-center gap-2 text-xs text-slate-400 hover:text-rose-400 transition-colors"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Khôi phục mặc định</span>
+            </button>
+            <span className="text-slate-600">·</span>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(JSON.stringify(editedLinks, null, 2));
+                alert('Đã sao chép dữ liệu cấu hình! Bạn có thể dán vào khung chat để tôi lưu vĩnh viễn vào file code.');
+              }}
+              type="button"
+              className="inline-flex items-center gap-1.5 text-xs text-amber-300 hover:text-amber-200 transition-colors"
+              title="Sao chép toàn bộ link để lưu vĩnh viễn vào mã nguồn"
+            >
+              <Copy className="w-3.5 h-3.5" />
+              <span>Sao chép dữ liệu để lưu code</span>
+            </button>
+          </div>
 
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <button

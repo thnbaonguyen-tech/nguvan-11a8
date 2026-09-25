@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { QrCode, Check, Sparkles, Upload, RotateCcw } from 'lucide-react';
+import { QrCode, Check, Sparkles, Upload, RotateCcw, ExternalLink } from 'lucide-react';
 import QRCode from 'qrcode';
+import craneQrAsset from '../assets/images/crane_qr.svg';
+import { LINKS } from '../config/links';
 
 interface QRCodeSectionProps {
   customQrImage?: string | null;
@@ -14,6 +16,7 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
   const [copied, setCopied] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [generatedQrSvg, setGeneratedQrSvg] = useState<string>('');
+  const [useWebsiteQr, setUseWebsiteQr] = useState(false);
   const [currentUrl, setCurrentUrl] = useState<string>(() => {
     return typeof window !== 'undefined' ? window.location.href : '';
   });
@@ -48,6 +51,7 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
     const urlToCopy = (typeof window !== 'undefined' && window.location.href)
       ? window.location.href
       : currentUrl;
+
     if (urlToCopy) {
       navigator.clipboard.writeText(urlToCopy);
       setCopied(true);
@@ -62,6 +66,7 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
       reader.onloadend = () => {
         if (typeof reader.result === 'string') {
           setImageError(false);
+          setUseWebsiteQr(false);
           onUpdateQrImage(reader.result);
         }
       };
@@ -73,8 +78,11 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
     if (onUpdateQrImage) {
       onUpdateQrImage(null);
       setImageError(false);
+      setUseWebsiteQr(true);
     }
   };
+
+  const activeImage = customQrImage || craneQrAsset;
 
   return (
     <section id="qr-code" className="relative py-24 px-4 sm:px-6 lg:px-8 border-t border-white/5 bg-[#070c1e] overflow-hidden">
@@ -114,9 +122,9 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
 
             {/* QR Image Box */}
             <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-xl overflow-hidden bg-slate-50 flex items-center justify-center border border-slate-200 p-2 shadow-inner">
-              {customQrImage && !imageError ? (
+              {!useWebsiteQr && activeImage && !imageError ? (
                 <img
-                  src={customQrImage}
+                  src={activeImage}
                   alt="Mã QR dự án Ngữ Văn 11A8"
                   className="w-full h-full object-contain"
                   onError={() => setImageError(true)}
@@ -140,8 +148,8 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
             {/* Bottom text inside card */}
             <div className="mt-3 text-center">
               <span className="text-[11px] font-semibold text-slate-600 block">
-                {customQrImage && !imageError 
-                  ? '★ Mã QR tùy chỉnh của bạn' 
+                {!useWebsiteQr 
+                  ? '★ Quét mở Padlet: Góc để lại lời nhắn 11A8' 
                   : 'Quét bằng camera điện thoại hoặc Zalo'}
               </span>
             </div>
@@ -155,6 +163,16 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
 
         {/* Link action buttons */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href={LINKS.padlet}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 bg-amber-400 hover:bg-amber-300 transition-all shadow-md shadow-amber-400/20"
+          >
+            <ExternalLink className="w-4 h-4" />
+            <span>Mở Padlet trực tiếp</span>
+          </a>
+
           <button
             onClick={handleCopyLink}
             type="button"
@@ -163,7 +181,7 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
             {copied ? (
               <>
                 <Check className="w-4 h-4 text-emerald-400" />
-                <span className="text-emerald-400">Đã sao chép link!</span>
+                <span className="text-emerald-400">Đã sao chép link website!</span>
               </>
             ) : (
               <>
@@ -172,6 +190,28 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
               </>
             )}
           </button>
+
+          {!useWebsiteQr ? (
+            <button
+              type="button"
+              onClick={() => setUseWebsiteQr(true)}
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all cursor-pointer"
+              title="Chuyển sang mã QR trang web"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>Hiện mã QR web</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setUseWebsiteQr(false)}
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-amber-300 bg-amber-400/10 hover:bg-amber-400/20 border border-amber-400/20 transition-all cursor-pointer"
+              title="Hiện lại mã QR Padlet"
+            >
+              <QrCode className="w-3.5 h-3.5" />
+              <span>Hiện mã QR Padlet</span>
+            </button>
+          )}
 
           {onUpdateQrImage && (
             <>
@@ -185,31 +225,19 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs text-slate-400 hover:text-slate-200 bg-white/5 hover:bg-white/10 border border-white/5 transition-all cursor-pointer"
                 title="Tải lên ảnh mã QR riêng của bạn"
               >
-                <Upload className="w-4 h-4 text-slate-400" />
-                <span>{customQrImage ? 'Đổi ảnh QR' : 'Tải lên mã QR riêng'}</span>
+                <Upload className="w-3.5 h-3.5" />
+                <span>Đổi ảnh</span>
               </button>
-
-              {customQrImage && (
-                <button
-                  type="button"
-                  onClick={handleResetQr}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs text-rose-300 hover:text-rose-200 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all cursor-pointer"
-                  title="Dùng lại mã QR website tự động"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                  <span>Dùng mã tự động</span>
-                </button>
-              )}
             </>
           )}
         </div>
 
         {/* Tips for class presentation */}
         <p className="mt-4 text-xs text-slate-400 font-light">
-          Thích hợp trình chiếu trên máy chiếu lớp học hoặc in gắn vào báo tường, tập san Ngữ văn 11.
+          Thầy cô và các bạn học sinh có thể quét mã để vào trực tiếp trang Padlet thảo luận hoặc bấm nút sao chép link website để lưu lại.
         </p>
       </div>
     </section>

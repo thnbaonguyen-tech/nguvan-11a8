@@ -37,7 +37,20 @@ export default function App() {
         if (saved) {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed) && parsed.length === 10) {
-            setLinks(parsed);
+            // Keep hardcoded titles, descriptions and URLs from INITIAL_PROJECT_LINKS fixed
+            const merged = INITIAL_PROJECT_LINKS.map((initialItem, idx) => {
+              const savedItem = parsed[idx];
+              if (!savedItem) return initialItem;
+              return {
+                ...initialItem,
+                title: initialItem.title,
+                description: initialItem.description,
+                tagline: initialItem.tagline,
+                buttonText: savedItem.buttonText || initialItem.buttonText,
+                url: initialItem.url,
+              };
+            });
+            setLinks(merged);
             break;
           }
         }
