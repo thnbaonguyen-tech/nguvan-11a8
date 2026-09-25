@@ -11,6 +11,14 @@ export const Hero: React.FC = () => {
     }
   };
 
+  const handleScrollToAbout = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const target = document.getElementById('about');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section id="hero" className="relative min-h-[90vh] flex items-center justify-center pt-8 pb-16 md:pt-12 md:pb-24 overflow-hidden">
       {/* Cinematic ambient background glow lights */}
@@ -88,6 +96,7 @@ export const Hero: React.FC = () => {
 
               <a
                 href="#about"
+                onClick={handleScrollToAbout}
                 className="inline-flex items-center gap-2 px-6 py-4 rounded-xl font-medium text-sm sm:text-base text-slate-300 hover:text-white bg-slate-900/60 hover:bg-slate-800/80 border border-white/10 hover:border-white/20 transition-all duration-200"
               >
                 <span>Về nhóm 11A8</span>

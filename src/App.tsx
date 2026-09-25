@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { InteractiveCards } from './components/InteractiveCards';
@@ -13,32 +13,8 @@ import { QRCodeSection } from './components/QRCodeSection';
 import { Footer } from './components/Footer';
 import { INITIAL_PROJECT_LINKS, ProjectLinkItem } from './config/links';
 
-const STORAGE_KEY_LINKS = 'nguvan11a8_project_links_v2';
-const STORAGE_KEY_QR = 'nguvan11a8_custom_qr_v1';
-
 export default function App() {
-  const [links, setLinks] = useState<ProjectLinkItem[]>(INITIAL_PROJECT_LINKS);
-  const [customQrImage, setCustomQrImage] = useState<string | null>(null);
-
-  // Load saved links and custom QR from localStorage if available
-  useEffect(() => {
-    try {
-      const savedLinks = localStorage.getItem(STORAGE_KEY_LINKS);
-      if (savedLinks) {
-        const parsed = JSON.parse(savedLinks);
-        if (Array.isArray(parsed) && parsed.length === 10) {
-          setLinks(parsed);
-        }
-      }
-
-      const savedQr = localStorage.getItem(STORAGE_KEY_QR);
-      if (savedQr) {
-        setCustomQrImage(savedQr);
-      }
-    } catch {
-      // Graceful fallback to default values
-    }
-  }, []);
+  const [links] = useState<ProjectLinkItem[]>(INITIAL_PROJECT_LINKS);
 
   return (
     <div className="min-h-screen bg-[#070b19] text-[#f1f5f9] selection:bg-amber-400/30 selection:text-amber-200">
@@ -67,7 +43,7 @@ export default function App() {
           <ProjectShowcase />
 
           {/* 5. Phần QR Code - SCAN TO EXPLORE */}
-          <QRCodeSection customQrImage={customQrImage} />
+          <QRCodeSection />
         </main>
 
         {/* 6. Footer & Back to top */}

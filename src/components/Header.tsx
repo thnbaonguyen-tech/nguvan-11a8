@@ -20,6 +20,18 @@ export const Header: React.FC = () => {
     { label: 'LIÊN KẾT', href: '#links' },
   ];
 
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      const id = href.slice(1);
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+      setMobileMenuOpen(false);
+    }
+  };
+
   return (
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
@@ -33,6 +45,7 @@ export const Header: React.FC = () => {
           {/* Brand & Subtitle Zone */}
           <a
             href="#hero"
+            onClick={(e) => handleNavClick(e, '#hero')}
             className="group flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-lg p-1"
           >
             <div className="flex items-center gap-2">
@@ -52,6 +65,7 @@ export const Header: React.FC = () => {
               <a
                 key={item.label}
                 href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
                 className="relative py-1 text-xs md:text-sm uppercase tracking-wider text-slate-300 hover:text-amber-300 transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-amber-400 hover:after:w-full after:transition-all after:duration-300"
               >
                 {item.label}
@@ -63,6 +77,7 @@ export const Header: React.FC = () => {
           <div className="hidden sm:flex items-center gap-3">
             <a
               href="#qr-code"
+              onClick={(e) => handleNavClick(e, '#qr-code')}
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-400/40 transition-all duration-200"
               title="Xem &amp; Quét mã QR"
             >
@@ -91,7 +106,7 @@ export const Header: React.FC = () => {
               <a
                 key={item.label}
                 href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => handleNavClick(e, item.href)}
                 className="px-3 py-2 rounded-md text-sm font-medium text-slate-200 hover:bg-white/5 hover:text-amber-300 transition-colors"
               >
                 {item.label}
@@ -100,7 +115,7 @@ export const Header: React.FC = () => {
             <div className="pt-2 border-t border-white/5 flex">
               <a
                 href="#qr-code"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => handleNavClick(e, '#qr-code')}
                 className="flex-1 text-center py-2 text-xs font-medium text-slate-300 bg-white/5 rounded-lg border border-white/10"
               >
                 Mã QR

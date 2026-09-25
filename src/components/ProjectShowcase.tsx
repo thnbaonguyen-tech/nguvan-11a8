@@ -179,6 +179,10 @@ export const ProjectShowcase: React.FC = () => {
             <div className="mt-8 pt-4 border-t border-white/10 flex items-center justify-between">
               <a
                 href="#links"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('links')?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="inline-flex items-center gap-2 text-xs font-semibold text-amber-300 hover:text-amber-200 transition-colors"
               >
                 <span>Xem các sản phẩm đã số hóa</span>
@@ -219,6 +223,10 @@ export const ProjectShowcase: React.FC = () => {
             <div className="mt-6 pt-4 border-t border-white/10 text-center">
               <a
                 href="#qr-code"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('qr-code')?.scrollIntoView({ behavior: 'smooth' });
+                }}
                 className="inline-flex items-center justify-center w-full py-2.5 px-4 rounded-xl text-xs font-bold text-slate-950 bg-amber-300 hover:bg-amber-200 transition-colors shadow-md shadow-amber-400/20"
               >
                 Quét mã truy cập tài liệu

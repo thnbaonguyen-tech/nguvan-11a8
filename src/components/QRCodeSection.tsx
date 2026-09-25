@@ -11,38 +11,44 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
   customQrImage 
 }) => {
   const [copied, setCopied] = useState(false);
-  const [imageError, setImageError] = useState(false);
   const [generatedQrSvg, setGeneratedQrSvg] = useState<string>('');
-  const [currentUrl, setCurrentUrl] = useState<string>('');
+  const [currentUrl, setCurrentUrl] = useState<string>(() => {
+    return typeof window !== 'undefined' ? window.location.href : '';
+  });
 
   useEffect(() => {
-    // Resolve dynamic current URL in browser
-    const url = typeof window !== 'undefined' ? window.location.href : 'https://nguvan11a8.vn';
-    setCurrentUrl(url);
+    if (typeof window !== 'undefined') {
+      const url = window.location.href;
+      setCurrentUrl(url);
 
-    // Generate real, scannable QR code SVG for current URL
-    QRCode.toString(url, {
-      type: 'svg',
-      margin: 1,
-      color: {
-        dark: '#0f172a',
-        light: '#ffffff'
-      },
-      errorCorrectionLevel: 'M'
-    })
-      .then((svgString) => {
-        setGeneratedQrSvg(svgString);
+      // Generate real, scannable QR code SVG for current website URL
+      QRCode.toString(url, {
+        type: 'svg',
+        margin: 1,
+        color: {
+          dark: '#0f172a',
+          light: '#ffffff',
+        },
+        errorCorrectionLevel: 'M',
       })
-      .catch((err) => {
-        console.error('Error generating dynamic QR code:', err);
-      });
+        .then((svgString) => {
+          setGeneratedQrSvg(svgString);
+        })
+        .catch((err) => {
+          console.error('Error generating dynamic QR code:', err);
+        });
+    }
   }, []);
 
   const handleCopyLink = () => {
-    const urlToCopy = typeof window !== 'undefined' ? window.location.href : currentUrl;
-    navigator.clipboard.writeText(urlToCopy);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    const urlToCopy = (typeof window !== 'undefined' && window.location.href)
+      ? window.location.href
+      : currentUrl;
+    if (urlToCopy) {
+      navigator.clipboard.writeText(urlToCopy);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   return (
@@ -83,15 +89,7 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
 
             {/* QR Image Box */}
             <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-xl overflow-hidden bg-slate-50 flex items-center justify-center border border-slate-200 p-2 shadow-inner">
-              {customQrImage && !imageError ? (
-                <img
-                  src={customQrImage}
-                  alt="Mã QR dự án Ngữ Văn 11A8"
-                  className="w-full h-full object-contain"
-                  onError={() => setImageError(true)}
-                  referrerPolicy="no-referrer"
-                />
-              ) : generatedQrSvg ? (
+              {generatedQrSvg ? (
                 /* Dynamic real scannable SVG QR Code generated from window.location.href */
                 <div
                   className="w-full h-full flex items-center justify-center [&>svg]:w-full [&>svg]:h-full [&>svg]:rounded-lg"
@@ -109,7 +107,7 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
             {/* Bottom text inside card */}
             <div className="mt-3 text-center">
               <span className="text-[11px] font-semibold text-slate-600 block">
-                {customQrImage ? '★ Mã QR tùy chỉnh của nhóm' : 'Quét bằng camera điện thoại hoặc Zalo'}
+                Quét bằng camera điện thoại hoặc Zalo
               </span>
             </div>
           </div>

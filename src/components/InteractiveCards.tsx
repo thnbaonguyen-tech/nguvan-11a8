@@ -10,7 +10,7 @@ import {
   Tv,
   Layers 
 } from 'lucide-react';
-import { ProjectLinkItem } from '../config/links';
+import { ProjectLinkItem, getSafeUrl } from '../config/links';
 
 interface InteractiveCardsProps {
   links: ProjectLinkItem[];
@@ -22,7 +22,8 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
 
   const handleCopy = (e: React.MouseEvent, link: ProjectLinkItem) => {
     e.stopPropagation();
-    navigator.clipboard.writeText(link.url);
+    const destinationUrl = getSafeUrl(link.url, 'https://www.youtube.com');
+    navigator.clipboard.writeText(destinationUrl);
     setCopiedId(link.id);
     setTimeout(() => setCopiedId(null), 2000);
   };
@@ -61,6 +62,8 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
 
   const renderCard = (item: ProjectLinkItem, index: number, isRow3: boolean = false) => {
     const isCopied = copiedId === item.id;
+    const isPlaceholder = item.url === 'PASTE_REAL_LINK_HERE' || item.url.startsWith('PASTE_');
+    const destinationUrl = getSafeUrl(item.url, 'https://www.youtube.com');
 
     return (
       <div
@@ -69,11 +72,11 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
         role="region"
         aria-label={`Thẻ tương tác ${item.title}`}
         className={`group relative rounded-2xl p-6 sm:p-7 flex flex-col justify-between transition-all duration-300 transform hover:-translate-y-2 cursor-pointer border bg-[#0b1329]/80 backdrop-blur-md overflow-hidden ${item.colorTheme.border} ${item.colorTheme.glow} shadow-xl shadow-black/40`}
-        onClick={() => window.open(item.url, '_blank', 'noopener,noreferrer')}
+        onClick={() => window.open(destinationUrl, '_blank', 'noopener,noreferrer')}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            window.open(item.url, '_blank', 'noopener,noreferrer');
+            window.open(destinationUrl, '_blank', 'noopener,noreferrer');
           }
         }}
       >
@@ -140,15 +143,19 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
         {/* Bottom Action: "MỞ →" button glowing on hover */}
         <div className="relative z-10 mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
           <span className="text-[11px] font-mono text-slate-400 truncate max-w-[150px]">
-            {item.url.replace(/^https?:\/\//, '')}
+            {isPlaceholder ? 'youtube.com' : destinationUrl.replace(/^https?:\/\//, '')}
           </span>
 
-          <span 
+          <a
+            href={destinationUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold tracking-wider text-slate-300 group-hover:text-amber-200 bg-white/5 group-hover:bg-amber-400/20 group-hover:border-amber-400/40 border border-white/10 transition-all duration-200 shadow-sm"
           >
             <span>{item.buttonText?.trim() || 'MỞ'}</span>
             <ExternalLink className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </span>
+          </a>
         </div>
       </div>
     );
