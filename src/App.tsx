@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { InteractiveCards } from './components/InteractiveCards';
@@ -11,10 +11,68 @@ import { AboutGroup } from './components/AboutGroup';
 import { ProjectShowcase } from './components/ProjectShowcase';
 import { QRCodeSection } from './components/QRCodeSection';
 import { Footer } from './components/Footer';
+import { LinkConfigModal } from './components/LinkConfigModal';
 import { INITIAL_PROJECT_LINKS, ProjectLinkItem } from './config/links';
 
+const STORAGE_KEYS_LINKS = [
+  'nguvan11a8_project_links_v2',
+  'nguvan11a8_project_links_v1',
+  'nguvan11a8_project_links',
+];
+const STORAGE_KEYS_QR = [
+  'nguvan11a8_custom_qr_v1',
+  'nguvan11a8_custom_qr',
+];
+
 export default function App() {
-  const [links] = useState<ProjectLinkItem[]>(INITIAL_PROJECT_LINKS);
+  const [links, setLinks] = useState<ProjectLinkItem[]>(INITIAL_PROJECT_LINKS);
+  const [customQrImage, setCustomQrImage] = useState<string | null>(null);
+  const [isConfigOpen, setIsConfigOpen] = useState(false);
+
+  // Load saved links and custom QR from localStorage if user previously edited them
+  useEffect(() => {
+    try {
+      for (const key of STORAGE_KEYS_LINKS) {
+        const saved = localStorage.getItem(key);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length === 10) {
+            setLinks(parsed);
+            break;
+          }
+        }
+      }
+
+      for (const key of STORAGE_KEYS_QR) {
+        const savedQr = localStorage.getItem(key);
+        if (savedQr) {
+          setCustomQrImage(savedQr);
+          break;
+        }
+      }
+    } catch {
+      // Fallback cleanly
+    }
+  }, []);
+
+  const handleSaveLinks = (updatedLinks: ProjectLinkItem[]) => {
+    setLinks(updatedLinks);
+    try {
+      localStorage.setItem('nguvan11a8_project_links_v2', JSON.stringify(updatedLinks));
+    } catch {}
+  };
+
+  const handleUpdateQrImage = (dataUrl: string | null) => {
+    setCustomQrImage(dataUrl);
+    try {
+      if (dataUrl) {
+        localStorage.setItem('nguvan11a8_custom_qr_v1', dataUrl);
+      } else {
+        localStorage.removeItem('nguvan11a8_custom_qr_v1');
+        localStorage.removeItem('nguvan11a8_custom_qr');
+      }
+    } catch {}
+  };
 
   return (
     <div className="min-h-screen bg-[#070b19] text-[#f1f5f9] selection:bg-amber-400/30 selection:text-amber-200">
@@ -34,7 +92,10 @@ export default function App() {
           <Hero />
 
           {/* 2. Phần 10 Nút Liên Kết - KHÔNG GIAN TƯƠNG TÁC (Most Important) */}
-          <InteractiveCards links={links} />
+          <InteractiveCards 
+            links={links} 
+            onOpenConfig={() => setIsConfigOpen(true)} 
+          />
 
           {/* 3. Phần Giới Thiệu Nhóm - VỀ NHÓM CÔNG NGHỆ */}
           <AboutGroup />
@@ -43,11 +104,22 @@ export default function App() {
           <ProjectShowcase />
 
           {/* 5. Phần QR Code - SCAN TO EXPLORE */}
-          <QRCodeSection />
+          <QRCodeSection 
+            customQrImage={customQrImage} 
+            onUpdateQrImage={handleUpdateQrImage} 
+          />
         </main>
 
         {/* 6. Footer & Back to top */}
         <Footer links={links} />
+
+        {/* Modal chỉnh sửa liên kết thủ công */}
+        <LinkConfigModal
+          isOpen={isConfigOpen}
+          onClose={() => setIsConfigOpen(false)}
+          links={links}
+          onSaveLinks={handleSaveLinks}
+        />
       </div>
     </div>
   );

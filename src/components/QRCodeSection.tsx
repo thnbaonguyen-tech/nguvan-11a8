@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { QrCode, Check, Sparkles } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { QrCode, Check, Sparkles, Upload, RotateCcw } from 'lucide-react';
 import QRCode from 'qrcode';
 
 interface QRCodeSectionProps {
@@ -8,13 +8,17 @@ interface QRCodeSectionProps {
 }
 
 export const QRCodeSection: React.FC<QRCodeSectionProps> = ({ 
-  customQrImage 
+  customQrImage,
+  onUpdateQrImage
 }) => {
   const [copied, setCopied] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const [generatedQrSvg, setGeneratedQrSvg] = useState<string>('');
   const [currentUrl, setCurrentUrl] = useState<string>(() => {
     return typeof window !== 'undefined' ? window.location.href : '';
   });
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -48,6 +52,27 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
       navigator.clipboard.writeText(urlToCopy);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && onUpdateQrImage) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setImageError(false);
+          onUpdateQrImage(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleResetQr = () => {
+    if (onUpdateQrImage) {
+      onUpdateQrImage(null);
+      setImageError(false);
     }
   };
 
@@ -89,7 +114,15 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
 
             {/* QR Image Box */}
             <div className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-xl overflow-hidden bg-slate-50 flex items-center justify-center border border-slate-200 p-2 shadow-inner">
-              {generatedQrSvg ? (
+              {customQrImage && !imageError ? (
+                <img
+                  src={customQrImage}
+                  alt="Mã QR dự án Ngữ Văn 11A8"
+                  className="w-full h-full object-contain"
+                  onError={() => setImageError(true)}
+                  referrerPolicy="no-referrer"
+                />
+              ) : generatedQrSvg ? (
                 /* Dynamic real scannable SVG QR Code generated from window.location.href */
                 <div
                   className="w-full h-full flex items-center justify-center [&>svg]:w-full [&>svg]:h-full [&>svg]:rounded-lg"
@@ -107,7 +140,9 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
             {/* Bottom text inside card */}
             <div className="mt-3 text-center">
               <span className="text-[11px] font-semibold text-slate-600 block">
-                Quét bằng camera điện thoại hoặc Zalo
+                {customQrImage && !imageError 
+                  ? '★ Mã QR tùy chỉnh của bạn' 
+                  : 'Quét bằng camera điện thoại hoặc Zalo'}
               </span>
             </div>
           </div>
@@ -118,7 +153,7 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
           “Quét mã để truy cập toàn bộ không gian dự án.”
         </p>
 
-        {/* Link action button */}
+        {/* Link action buttons */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={handleCopyLink}
@@ -137,6 +172,39 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
               </>
             )}
           </button>
+
+          {onUpdateQrImage && (
+            <>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileUpload}
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 transition-all cursor-pointer"
+                title="Tải lên ảnh mã QR riêng của bạn"
+              >
+                <Upload className="w-4 h-4 text-slate-400" />
+                <span>{customQrImage ? 'Đổi ảnh QR' : 'Tải lên mã QR riêng'}</span>
+              </button>
+
+              {customQrImage && (
+                <button
+                  type="button"
+                  onClick={handleResetQr}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs text-rose-300 hover:text-rose-200 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all cursor-pointer"
+                  title="Dùng lại mã QR website tự động"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  <span>Dùng mã tự động</span>
+                </button>
+              )}
+            </>
+          )}
         </div>
 
         {/* Tips for class presentation */}

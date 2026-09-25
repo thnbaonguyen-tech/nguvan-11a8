@@ -8,7 +8,8 @@ import {
   Film, 
   Video, 
   Tv,
-  Layers 
+  Layers,
+  Settings 
 } from 'lucide-react';
 import { ProjectLinkItem, getSafeUrl } from '../config/links';
 
@@ -17,7 +18,7 @@ interface InteractiveCardsProps {
   onOpenConfig?: () => void;
 }
 
-export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => {
+export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links, onOpenConfig }) => {
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const handleCopy = (e: React.MouseEvent, link: ProjectLinkItem) => {
@@ -221,14 +222,27 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
 
       </div>
 
-      {/* Helpful Hint banner for evaluation & users */}
+      {/* Helpful Hint banner with config button */}
       <div className="mt-12 p-4 rounded-xl bg-slate-900/60 border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
         <div className="flex items-center gap-3">
           <div className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
           <span>Tất cả các liên kết mở tự động trong tab mới an toàn (<code>target=&quot;_blank&quot;</code>).</span>
         </div>
-        <div className="text-slate-400 font-mono text-[11px]">
-          10/10 Video YouTube · Ngữ văn 11A8
+        <div className="flex items-center gap-3">
+          {onOpenConfig && (
+            <button
+              onClick={onOpenConfig}
+              type="button"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 border border-amber-400/30 transition-colors font-medium text-xs"
+              title="Chỉnh sửa hoặc dán link thủ công"
+            >
+              <Settings className="w-3.5 h-3.5" />
+              <span>Chỉnh sửa liên kết</span>
+            </button>
+          )}
+          <span className="text-slate-400 font-mono text-[11px]">
+            10/10 Video YouTube · Ngữ văn 11A8
+          </span>
         </div>
       </div>
     </section>
