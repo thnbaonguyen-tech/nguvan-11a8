@@ -1,0 +1,6 @@
+{
+  "name": "Nhóm Công Nghệ - Ngữ Văn 11A8",
+  "description": "Website dự án học tập Ngữ văn 11: Nguyễn Quang Sáng & Văn học Việt Nam - Công nghệ kết nối văn học.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
