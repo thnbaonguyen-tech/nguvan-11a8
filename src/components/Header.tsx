@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, QrCode } from 'lucide-react';
+import { Menu, X, QrCode, Sun, Moon } from 'lucide-react';
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  isDarkMode?: boolean;
+  onToggleTheme?: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ isDarkMode = true, onToggleTheme }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -15,9 +20,10 @@ export const Header: React.FC = () => {
 
   const navLinks = [
     { label: 'TRANG CHỦ', href: '#hero' },
-    { label: 'NỘI DUNG', href: '#about' },
-    { label: 'TÀI NGUYÊN', href: '#project' },
-    { label: 'LIÊN KẾT', href: '#links' },
+    { label: 'TƯ LIỆU', href: '#links' },
+    { label: 'GIỚI THIỆU', href: '#about' },
+    { label: 'DỰ ÁN', href: '#project' },
+    { label: 'MÃ QR', href: '#qr-code' },
   ];
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -35,38 +41,78 @@ export const Header: React.FC = () => {
   return (
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        isScrolled
-          ? 'bg-[#070b19]/90 backdrop-blur-md border-b border-white/10 shadow-lg shadow-black/40 py-2.5'
-          : 'bg-[#070b19]/60 backdrop-blur-sm border-b border-white/5 py-4'
+        isScrolled ? 'backdrop-blur-md shadow-lg py-2.5' : 'backdrop-blur-sm py-3'
       }`}
+      style={{
+        backgroundColor: 'var(--bg-glass)',
+        borderBottom: '1px solid var(--border)',
+      }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-4">
-          {/* Brand & Subtitle Zone */}
-          <a
-            href="#hero"
-            onClick={(e) => handleNavClick(e, '#hero')}
-            className="group flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-lg p-1"
-          >
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-              <span className="text-base sm:text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-amber-300 transition-colors uppercase">
-                NHÓM CÔNG NGHỆ – NGỮ VĂN 11A8
+          
+          {/* Left Zone: Theme Switcher (Trắng / Đen) at Top Left Corner + Brand */}
+          <div className="flex items-center gap-3 sm:gap-4">
+            {/* Top Left Theme Toggle Button */}
+            {onToggleTheme && (
+              <button
+                onClick={onToggleTheme}
+                type="button"
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer shadow-sm ${
+                  isDarkMode
+                    ? 'bg-white/10 hover:bg-white/15 text-amber-300 border border-amber-400/40 shadow-amber-400/10'
+                    : 'bg-amber-500/10 hover:bg-amber-500/15 text-amber-800 border border-amber-600/30'
+                }`}
+                title={isDarkMode ? "Chuyển sang nền sáng (Trắng)" : "Chuyển sang nền tối (Đen)"}
+                aria-label="Chuyển đổi nền trắng đen"
+              >
+                {isDarkMode ? (
+                  <>
+                    <Sun className="w-3.5 h-3.5 text-amber-400" />
+                    <span className="text-[11px] font-sans font-medium text-amber-200">Nền trắng</span>
+                  </>
+                ) : (
+                  <>
+                    <Moon className="w-3.5 h-3.5 text-indigo-700" />
+                    <span className="text-[11px] font-sans font-semibold text-slate-800">Nền đen</span>
+                  </>
+                )}
+              </button>
+            )}
+
+            {/* Brand Title (Dự án Ngữ văn tập thể 11A8) */}
+            <a
+              href="#hero"
+              onClick={(e) => handleNavClick(e, '#hero')}
+              className="group flex flex-col focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-lg p-0.5"
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                <span 
+                  className="text-sm sm:text-base md:text-lg font-bold tracking-tight transition-colors uppercase"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  DỰ ÁN NGỮ VĂN TẬP THỂ 11A8
+                </span>
+              </div>
+              <span 
+                className="text-[11px] sm:text-xs font-normal tracking-wide"
+                style={{ color: 'var(--text-muted)' }}
+              >
+                Nguyễn Quang Sáng <span style={{ color: 'var(--gold)' }}>|</span> Văn học Nam Bộ
               </span>
-            </div>
-            <span className="text-xs md:text-sm font-normal text-slate-300 tracking-wide mt-0.5">
-              Dự án học tập <span className="text-amber-400/80">|</span> Nguyễn Quang Sáng &amp; Văn học Việt Nam
-            </span>
-          </a>
+            </a>
+          </div>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-8 text-sm font-semibold tracking-wider text-slate-300">
+          <nav className="hidden lg:flex items-center gap-7 text-xs font-semibold tracking-wider">
             {navLinks.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className="relative py-1 text-xs md:text-sm uppercase tracking-wider text-slate-300 hover:text-amber-300 transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-amber-400 hover:after:w-full after:transition-all after:duration-300"
+                className="relative py-1 uppercase tracking-wider transition-colors duration-200 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 hover:after:w-full after:transition-all after:duration-300"
+                style={{ color: 'var(--text-secondary)' }}
               >
                 {item.label}
               </a>
@@ -78,10 +124,15 @@ export const Header: React.FC = () => {
             <a
               href="#qr-code"
               onClick={(e) => handleNavClick(e, '#qr-code')}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium text-slate-300 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-amber-400/40 transition-all duration-200"
-              title="Xem &amp; Quét mã QR"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-200"
+              style={{
+                backgroundColor: 'var(--accent-soft)',
+                border: '1px solid var(--border)',
+                color: 'var(--text-secondary)',
+              }}
+              title="Xem &amp; Quét mã QR Padlet"
             >
-              <QrCode className="w-3.5 h-3.5 text-amber-400" />
+              <QrCode className="w-3.5 h-3.5" style={{ color: 'var(--gold)' }} />
               <span>Mã QR</span>
             </a>
           </div>

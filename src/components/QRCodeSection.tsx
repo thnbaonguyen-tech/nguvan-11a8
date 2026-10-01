@@ -212,27 +212,6 @@ export const QRCodeSection: React.FC<QRCodeSectionProps> = ({
               <span>Hiện mã QR Padlet</span>
             </button>
           )}
-
-          {onUpdateQrImage && (
-            <>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleFileUpload}
-              />
-              <button
-                type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs text-slate-400 hover:text-slate-200 bg-white/5 hover:bg-white/10 border border-white/5 transition-all cursor-pointer"
-                title="Tải lên ảnh mã QR riêng của bạn"
-              >
-                <Upload className="w-3.5 h-3.5" />
-                <span>Đổi ảnh</span>
-              </button>
-            </>
-          )}
         </div>
 
         {/* Tips for class presentation */}

@@ -47,7 +47,7 @@ export const LinkConfigModal: React.FC<LinkConfigModalProps> = ({
   };
 
   const handleResetToDefault = () => {
-    if (window.confirm('Khôi phục toàn bộ 10 liên kết về cấu hình ban đầu?')) {
+    if (window.confirm('Khôi phục toàn bộ 09 liên kết về cấu hình ban đầu?')) {
       setEditedLinks(INITIAL_PROJECT_LINKS);
       onSaveLinks(INITIAL_PROJECT_LINKS);
     }
@@ -66,7 +66,7 @@ export const LinkConfigModal: React.FC<LinkConfigModalProps> = ({
           <div>
             <h2 id="modal-title" className="text-xl font-bold text-white flex items-center gap-2">
               <Link2 className="w-5 h-5 text-amber-400" />
-              <span>Đổi tên &amp; Cấu hình 10 Nút Liên Kết 11A8</span>
+              <span>Đổi tên &amp; Cấu hình 09 Nút Liên Kết 11A8</span>
             </h2>
             <p className="text-xs text-slate-400 mt-1">
               Bạn có thể tự do đổi tên hiển thị (tiêu đề), mô tả ngắn, chữ nút bấm (Mở, Xem ngay...) và dán link thực tế của nhóm.

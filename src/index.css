@@ -1,15 +1,91 @@
 @import "tailwindcss";
 
 @layer base {
-  :root {
+  :root,
+  [data-theme="dark"],
+  .dark {
     --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-serif: 'Newsreader', Georgia, Cambria, 'Times New Roman', Times, serif;
+
+    /* --------------------------------------------------
+       DARK MODE TOKENS (Cinematic, Literary, Deep Navy)
+       -------------------------------------------------- */
+    --bg-primary: #070b19;
+    --bg-secondary: #0b1329;
+    --bg-surface: #0a1128;
+    --bg-surface-elevated: #111b3b;
+    --bg-card: rgba(10, 17, 40, 0.95);
+    --bg-card-hover: rgba(16, 26, 62, 0.98);
+    --bg-glass: rgba(7, 11, 25, 0.85);
+
+    --text-primary: #fdfbf7;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-inverse: #070b19;
+
+    --border: rgba(255, 255, 255, 0.1);
+    --border-subtle: rgba(255, 255, 255, 0.05);
+    --border-card: rgba(255, 255, 255, 0.1);
+    --border-card-hover: rgba(223, 183, 108, 0.6);
+
+    --accent: #dfb76c;
+    --accent-hover: #f6d87c;
+    --accent-soft: rgba(223, 183, 108, 0.15);
+    --gold: #dfb76c;
+    --gold-soft: rgba(223, 183, 108, 0.15);
+    --gold-border: rgba(223, 183, 108, 0.35);
+
+    --shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6), 0 0 25px rgba(223, 183, 108, 0.15);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --overlay: rgba(7, 11, 25, 0.85);
+    --overlay-gradient: linear-gradient(to top, rgba(10, 17, 40, 0.95), rgba(10, 17, 40, 0.4), rgba(0, 0, 0, 0.35));
+  }
+
+  /* --------------------------------------------------
+     LIGHT MODE TOKENS (Sophisticated Editorial / Warm Ivory)
+     -------------------------------------------------- */
+  :root[data-theme="light"],
+  html.light,
+  body.light,
+  .light {
+    --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-serif: 'Newsreader', Georgia, Cambria, 'Times New Roman', Times, serif;
+
+    --bg-primary: #F5F3EE;
+    --bg-secondary: #EEECE6;
+    --bg-surface: #FFFFFF;
+    --bg-surface-elevated: #FAF8F5;
+    --bg-card: #FFFFFF;
+    --bg-card-hover: #FFFFFF;
+    --bg-glass: rgba(245, 243, 238, 0.92);
+
+    --text-primary: #172033;
+    --text-secondary: #4B5563;
+    --text-muted: #6B7280;
+    --text-inverse: #FFFFFF;
+
+    --border: rgba(23, 32, 51, 0.12);
+    --border-subtle: rgba(23, 32, 51, 0.06);
+    --border-card: rgba(23, 32, 51, 0.12);
+    --border-card-hover: rgba(180, 83, 9, 0.5);
+
+    --accent: #172033;
+    --accent-hover: #0F172A;
+    --accent-soft: rgba(23, 32, 51, 0.06);
+    --gold: #B45309;
+    --gold-soft: rgba(180, 83, 9, 0.1);
+    --gold-border: rgba(180, 83, 9, 0.28);
+
+    --shadow: 0 10px 25px -5px rgba(23, 32, 51, 0.08), 0 8px 10px -6px rgba(23, 32, 51, 0.04);
+    --shadow-sm: 0 2px 8px rgba(23, 32, 51, 0.05);
+    --overlay: rgba(23, 32, 51, 0.4);
+    --overlay-gradient: linear-gradient(to top, rgba(23, 32, 51, 0.75), rgba(23, 32, 51, 0.25), rgba(0, 0, 0, 0.1));
   }
 
   body {
     font-family: var(--font-sans);
-    background-color: #070b19;
-    color: #f1f5f9;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     overflow-x: hidden;
   }
 
@@ -18,32 +94,403 @@
   }
 }
 
-/* Subtle cinematic background beam */
-.ambient-glow {
-  background: radial-gradient(circle at 50% 20%, rgba(30, 58, 138, 0.28) 0%, rgba(15, 23, 42, 0) 70%);
+/* --------------------------------------------------
+   GLOBAL SMOOTH THEME TRANSITION
+   Do NOT animate layout dimensions or images!
+   -------------------------------------------------- */
+*, *::before, *::after {
+  transition-property: background-color, color, border-color, box-shadow, opacity;
+  transition-duration: 250ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.golden-accent-glow {
-  background: radial-gradient(circle at 80% 30%, rgba(245, 158, 11, 0.12) 0%, rgba(15, 23, 42, 0) 60%);
+img, svg, iframe, video {
+  transition-property: transform, opacity, filter;
 }
 
-/* Glassmorphism panel styles */
+/* Glassmorphism panel styles referencing tokens */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.72);
+  background: var(--bg-glass);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border);
 }
 
 .glass-card {
-  background: rgba(13, 20, 38, 0.65);
+  background: var(--bg-card);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--border-card);
+  box-shadow: var(--shadow);
 }
 
-/* Smooth transitions */
-.transition-smooth {
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+/* ==================================================
+   EXHAUSTIVE LIGHT MODE ADAPTATION RULES
+   Ensures 100% of text, backgrounds, cards, borders, 
+   icons, badges and banners automatically adapt!
+   ================================================== */
+[data-theme="light"],
+.light {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
 }
 
+/* 1. Header & Navigation */
+[data-theme="light"] header,
+.light header {
+  background-color: var(--bg-glass) !important;
+  border-bottom: 1px solid var(--border) !important;
+  box-shadow: 0 4px 20px -2px rgba(23, 32, 51, 0.05) !important;
+}
+
+[data-theme="light"] header a,
+[data-theme="light"] header nav a,
+.light header a,
+.light header nav a {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="light"] header a:hover,
+[data-theme="light"] header nav a:hover,
+.light header a:hover,
+.light header nav a:hover {
+  color: var(--gold) !important;
+}
+
+[data-theme="light"] header .font-bold,
+.light header .font-bold {
+  color: var(--text-primary) !important;
+}
+
+/* 2. Headings & Typography */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] .font-display,
+.light h1,
+.light h2,
+.light h3,
+.light h4,
+.light .font-display {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] p,
+.light p {
+  color: var(--text-secondary);
+}
+
+/* Text utility class adaptations */
+[data-theme="light"] .text-white,
+[data-theme="light"] .text-\[\#fdfbf7\],
+[data-theme="light"] .text-\[\#f8f5ee\],
+[data-theme="light"] .text-\[\#f3ede2\],
+.light .text-white,
+.light .text-\[\#fdfbf7\],
+.light .text-\[\#f8f5ee\],
+.light .text-\[\#f3ede2\] {
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .text-slate-200,
+[data-theme="light"] .text-slate-300,
+[data-theme="light"] .text-\[\#c8d1e0\],
+[data-theme="light"] .text-\[\#e2d9cc\],
+[data-theme="light"] .text-\[\#d5deeb\],
+.light .text-slate-200,
+.light .text-slate-300,
+.light .text-\[\#c8d1e0\],
+.light .text-\[\#e2d9cc\],
+.light .text-\[\#d5deeb\] {
+  color: var(--text-secondary) !important;
+}
+
+[data-theme="light"] .text-slate-400,
+[data-theme="light"] .text-slate-500,
+[data-theme="light"] .text-\[\#94a3b8\],
+.light .text-slate-400,
+.light .text-slate-500,
+.light .text-\[\#94a3b8\] {
+  color: var(--text-muted) !important;
+}
+
+[data-theme="light"] .text-amber-200,
+[data-theme="light"] .text-amber-300,
+[data-theme="light"] .text-amber-400,
+[data-theme="light"] .text-\[\#dfb76c\],
+[data-theme="light"] .text-\[\#f6d87c\],
+.light .text-amber-200,
+.light .text-amber-300,
+.light .text-amber-400,
+.light .text-\[\#dfb76c\],
+.light .text-\[\#f6d87c\] {
+  color: var(--gold) !important;
+}
+
+/* 3. Section Containers & Surfaces */
+[data-theme="light"] #hero,
+.light #hero {
+  background-color: var(--bg-primary) !important;
+}
+
+[data-theme="light"] #links,
+.light #links {
+  background-color: var(--bg-primary) !important;
+}
+
+[data-theme="light"] #about,
+.light #about {
+  background-color: var(--bg-secondary) !important;
+  border-top-color: var(--border) !important;
+}
+
+[data-theme="light"] #project,
+.light #project {
+  background-color: var(--bg-primary) !important;
+  border-top-color: var(--border) !important;
+}
+
+[data-theme="light"] #qr-code,
+.light #qr-code {
+  background-color: var(--bg-secondary) !important;
+  border-top-color: var(--border) !important;
+}
+
+[data-theme="light"] footer,
+.light footer {
+  background-color: var(--bg-secondary) !important;
+  border-top-color: var(--border) !important;
+  color: var(--text-secondary) !important;
+}
+
+/* 4. Background Color Class Adaptations */
+[data-theme="light"] .bg-\[\#070b19\],
+[data-theme="light"] .bg-\[\#070c1e\],
+[data-theme="light"] .bg-\[\#050814\],
+.light .bg-\[\#070b19\],
+.light .bg-\[\#070c1e\],
+.light .bg-\[\#050814\] {
+  background-color: var(--bg-primary) !important;
+}
+
+[data-theme="light"] .bg-\[\#080d21\],
+[data-theme="light"] .bg-\[\#0b1329\],
+[data-theme="light"] .bg-\[\#0b1226\],
+.light .bg-\[\#080d21\],
+.light .bg-\[\#0b1329\],
+.light .bg-\[\#0b1226\] {
+  background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="light"] .bg-\[\#0a1128\],
+[data-theme="light"] .bg-\[\#0a1128\]\/95,
+[data-theme="light"] .bg-\[\#0e1738\],
+[data-theme="light"] .bg-slate-900,
+[data-theme="light"] .bg-slate-900\/60,
+[data-theme="light"] .bg-slate-900\/70,
+[data-theme="light"] .bg-slate-900\/80,
+[data-theme="light"] .bg-slate-900\/90,
+.light .bg-\[\#0a1128\],
+.light .bg-\[\#0a1128\]\/95,
+.light .bg-\[\#0e1738\],
+.light .bg-slate-900,
+.light .bg-slate-900\/60,
+.light .bg-slate-900\/70,
+.light .bg-slate-900\/80,
+.light .bg-slate-900\/90 {
+  background-color: var(--bg-surface) !important;
+}
+
+[data-theme="light"] .bg-slate-950\/80,
+[data-theme="light"] .bg-slate-950\/85,
+.light .bg-slate-950\/80,
+.light .bg-slate-950\/85 {
+  background-color: var(--bg-surface-elevated) !important;
+}
+
+[data-theme="light"] .bg-white\/5,
+[data-theme="light"] .bg-white\/10,
+.light .bg-white\/5,
+.light .bg-white\/10 {
+  background-color: var(--accent-soft) !important;
+}
+
+[data-theme="light"] .bg-white\/15,
+[data-theme="light"] .bg-white\/20,
+.light .bg-white\/15,
+.light .bg-white\/20 {
+  background-color: rgba(23, 32, 51, 0.08) !important;
+}
+
+/* 5. Borders & Dividers */
+[data-theme="light"] .border-white\/5,
+[data-theme="light"] .border-white\/10,
+[data-theme="light"] .border-white\/15,
+[data-theme="light"] .border-white\/20,
+.light .border-white\/5,
+.light .border-white\/10,
+.light .border-white\/15,
+.light .border-white\/20 {
+  border-color: var(--border) !important;
+}
+
+[data-theme="light"] .border-\[\#dfb76c\]\/20,
+[data-theme="light"] .border-\[\#dfb76c\]\/25,
+[data-theme="light"] .border-\[\#dfb76c\]\/30,
+[data-theme="light"] .border-amber-400\/20,
+[data-theme="light"] .border-amber-400\/30,
+[data-theme="light"] .border-amber-400\/40,
+[data-theme="light"] .border-amber-500\/25,
+.light .border-\[\#dfb76c\]\/20,
+.light .border-\[\#dfb76c\]\/25,
+.light .border-\[\#dfb76c\]\/30,
+.light .border-amber-400\/20,
+.light .border-amber-400\/30,
+.light .border-amber-400\/40,
+.light .border-amber-500\/25 {
+  border-color: var(--gold-border) !important;
+}
+
+/* 6. Resource Cards (Section 5 Requirement) */
+[data-theme="light"] [role="region"][aria-label^="Tư liệu"],
+.light [role="region"][aria-label^="Tư liệu"] {
+  background-color: var(--bg-surface) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-card) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+[data-theme="light"] [role="region"][aria-label^="Tư liệu"]:hover,
+.light [role="region"][aria-label^="Tư liệu"]:hover {
+  border-color: var(--gold-border) !important;
+  box-shadow: 0 15px 30px -5px rgba(23, 32, 51, 0.12), 0 0 15px rgba(180, 83, 9, 0.12) !important;
+}
+
+/* Card Thumbnail Overlay in Light Mode */
+[data-theme="light"] .aspect-video > div[class*="bg-gradient-to-t"],
+.light .aspect-video > div[class*="bg-gradient-to-t"] {
+  background: linear-gradient(to top, rgba(23, 32, 51, 0.82), rgba(23, 32, 51, 0.28), rgba(0, 0, 0, 0.15)) !important;
+}
+
+/* Section Hero Banner in Light Mode */
+[data-theme="light"] #links > .relative.mb-20,
+.light #links > .relative.mb-20 {
+  background-color: var(--bg-surface) !important;
+  border-color: var(--gold-border) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+[data-theme="light"] #links > .relative.mb-20 .bg-gradient-to-r,
+.light #links > .relative.mb-20 .bg-gradient-to-r {
+  background: linear-gradient(to right, rgba(245, 243, 238, 0.95), rgba(245, 243, 238, 0.9), rgba(245, 243, 238, 0.8)) !important;
+}
+
+[data-theme="light"] #links > .relative.mb-20 .bg-gradient-to-t,
+.light #links > .relative.mb-20 .bg-gradient-to-t {
+  background: linear-gradient(to top, rgba(245, 243, 238, 0.95), transparent, rgba(245, 243, 238, 0.3)) !important;
+}
+
+[data-theme="light"] #links > .relative.mb-20 .bg-black\/40,
+.light #links > .relative.mb-20 .bg-black\/40 {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="light"] #links > .relative.mb-20 .border-t,
+.light #links > .relative.mb-20 .border-t {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border) !important;
+  color: var(--text-muted) !important;
+}
+
+/* 7. Buttons & Interactive Controls */
+[data-theme="light"] .bg-amber-400,
+[data-theme="light"] .bg-amber-300,
+.light .bg-amber-400,
+.light .bg-amber-300 {
+  background-color: #B45309 !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="light"] .bg-amber-400:hover,
+[data-theme="light"] .bg-amber-300:hover,
+.light .bg-amber-400:hover,
+.light .bg-amber-300:hover {
+  background-color: #92400E !important;
+}
+
+[data-theme="light"] .bg-amber-500\/10,
+[data-theme="light"] .bg-amber-500\/15,
+[data-theme="light"] .bg-amber-400\/10,
+[data-theme="light"] .bg-\[\#dfb76c\]\/15,
+.light .bg-amber-500\/10,
+.light .bg-amber-500\/15,
+.light .bg-amber-400\/10,
+.light .bg-\[\#dfb76c\]\/15 {
+  background-color: var(--gold-soft) !important;
+}
+
+/* Back to top button in footer */
+[data-theme="light"] footer button,
+.light footer button {
+  background-color: var(--bg-surface) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+/* QR Code Section Cards */
+[data-theme="light"] #qr-code .bg-\[\#0b1329\],
+.light #qr-code .bg-\[\#0b1329\] {
+  background-color: var(--bg-surface) !important;
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+/* --------------------------------------------------
+   CLASS PHOTO MARQUEE ANIMATION (Seamless 30s Loop)
+   -------------------------------------------------- */
+@keyframes classPhotoMarquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-class-marquee {
+  display: flex;
+  width: max-content;
+  animation: classPhotoMarquee 30s linear infinite;
+  will-change: transform;
+}
+
+.animate-class-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* --------------------------------------------------
+   A4 ESSAY MARQUEE ANIMATION (Slow & Elegant 40s Loop)
+   -------------------------------------------------- */
+@keyframes essayPhotoMarquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-essay-marquee {
+  display: flex;
+  width: max-content;
+  animation: essayPhotoMarquee 40s linear infinite;
+  will-change: transform;
+}
+
+.animate-essay-marquee:hover {
+  animation-play-state: paused;
+}

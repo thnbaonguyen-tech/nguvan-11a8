@@ -20,13 +20,16 @@ export const Footer: React.FC<FooterProps> = () => {
           {/* Brand Info */}
           <div className="text-center md:text-left">
             <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight uppercase font-display">
-              NHÓM CÔNG NGHỆ – NGỮ VĂN 11A8
+              DỰ ÁN NGỮ VĂN TẬP THỂ 11A8
             </h3>
             <p className="mt-2 text-sm text-amber-300 font-medium tracking-wide">
-              “Made with creativity by 11A8”
+              Trang web được tạo bởi Nguyễn Đình Thiên Bảo
+            </p>
+            <p className="mt-1 text-xs text-slate-300 font-normal">
+              “Made with creativity by 11A8” · Nguyễn Quang Sáng &amp; Văn học Nam Bộ
             </p>
             <p className="mt-1 text-xs text-slate-400 font-light">
-              Dự án học tập liên môn Ngữ văn 11 &amp; Công nghệ thông tin · Hệ thống 10 video tương tác YouTube
+              Dự án học tập liên môn Ngữ văn 11 &amp; Công nghệ thông tin · Hệ thống 09 tư liệu tương tác
             </p>
           </div>
         </div>
@@ -34,7 +37,7 @@ export const Footer: React.FC<FooterProps> = () => {
         {/* Bottom Bar: Copyright & Back to Top */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
           <div className="flex items-center gap-2">
-            <span>© 2026 Nhóm Công nghệ – Ngữ văn 11A8. All rights reserved.</span>
+            <span>© 2026 Dự án Ngữ văn tập thể 11A8 · Tạo bởi Nguyễn Đình Thiên Bảo. All rights reserved.</span>
           </div>
 
           {/* Back to Top Button */}
