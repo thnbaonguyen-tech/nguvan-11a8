@@ -14,6 +14,7 @@ import { ProjectLinkItem, getSafeUrl } from '../config/links';
 // Custom curated editorial images for each resource card
 import thumbDongSongHat from '../assets/images/dong_song_hat_1790874984888.jpg';
 import thumbNhuMotHuyenThoai from '../assets/images/nhu_mot_huyen_thoai_1790874998592.jpg';
+import thumbChoDenBaoGio from '../assets/images/cho_den_bao_gio_1790960433410.jpg';
 import thumbMuaGioChuong from '../assets/images/mua_gio_chuong_1790875013571.jpg';
 import thumbCanhDongHoang from '../assets/images/canh_dong_hoang_1790875026105.jpg';
 import thumbChiecLuocNga from '../assets/images/chiec_luoc_nga_1790875037216.jpg';
@@ -59,7 +60,7 @@ const EDITORIAL_THUMBNAILS: Record<number, EditorialThumbnailConfig> = {
     subTheme: 'Điểm chạm văn học châu thổ',
   },
   5: {
-    image: thumbNhuMotHuyenThoai,
+    image: thumbChoDenBaoGio,
     categoryTag: 'SÁNG TẠO 11A8',
     badgeCode: 'NQS-05',
     subTheme: 'Góc nhìn người trẻ về chiến tranh',
