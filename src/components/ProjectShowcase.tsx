@@ -16,7 +16,7 @@ import namBoImage from '../assets/images/project_nam_bo_1790353109519.jpg';
 
 // ==================================================
 // DỮ LIỆU CÁC TRANG BÀI VIẾT TAY NGHỊ LUẬN VĂN HỌC 11A8
-// (Đúng 5 trang khổ đứng chuẩn A4 tỷ lệ 210 : 297 theo yêu cầu)
+// (Đúng 7 trang khổ đứng chuẩn A4 tỷ lệ 210 : 297 theo yêu cầu)
 // Khi có ảnh chụp thực tế, chỉ cần thay thế giá trị src=""
 // ==================================================
 export const essayPages = [
@@ -24,18 +24,20 @@ export const essayPages = [
   { src: "", alt: "Bài viết Ngữ văn 11A8 - Trang 02" },
   { src: "", alt: "Bài viết Ngữ văn 11A8 - Trang 03" },
   { src: "", alt: "Bài viết Ngữ văn 11A8 - Trang 04" },
-  { src: "", alt: "Bài viết Ngữ văn 11A8 - Trang 05" }
+  { src: "", alt: "Bài viết Ngữ văn 11A8 - Trang 05" },
+  { src: "", alt: "Bài viết Ngữ văn 11A8 - Trang 06" },
+  { src: "", alt: "Bài viết Ngữ văn 11A8 - Trang 07" }
 ];
 
 export const ProjectShowcase: React.FC = () => {
   // Tabs state for Phần Dự Án Ngữ Văn 11A8
   const [activeTab, setActiveTab] = useState<'author' | 'works' | 'tech'>('tech');
 
-  // Modal Lightbox state for Phần Nghị Luận Văn Học (5 trang)
+  // Modal Lightbox state for Phần Nghị Luận Văn Học (7 trang)
   const [selectedPageIndex, setSelectedPageIndex] = useState<number | null>(null);
   const [zoomLevel, setZoomLevel] = useState<number>(1);
 
-  // Nhân bản mảng 5 trang để tạo hiệu ứng marquee chạy vô tận không đứt đoạn
+  // Nhân bản mảng 7 trang để tạo hiệu ứng marquee chạy vô tận không đứt đoạn
   const duplicatedPages = [...essayPages, ...essayPages];
 
   // Reset zoom whenever active page changes
@@ -517,7 +519,7 @@ export const ProjectShowcase: React.FC = () => {
               }}
             >
               <Feather className="w-3.5 h-3.5" />
-              <span>TRIỂN LÃM TƯ LIỆU BÀI VIẾT TAY · 05 TRANG</span>
+              <span>TRIỂN LÃM TƯ LIỆU BÀI VIẾT TAY · 07 TRANG</span>
             </div>
 
             <h3 
@@ -929,7 +931,7 @@ export const ProjectShowcase: React.FC = () => {
                     <span className="font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">
                       NGỮ VĂN 11A8 · NGHỊ LUẬN VĂN HỌC
                     </span>
-                    <span>Trang {String(selectedPageIndex + 1).padStart(2, '0')} / 05</span>
+                    <span>Trang {String(selectedPageIndex + 1).padStart(2, '0')} / {String(essayPages.length).padStart(2, '0')}</span>
                   </div>
 
                   <div className="my-auto text-center px-4">
