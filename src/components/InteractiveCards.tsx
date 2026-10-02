@@ -18,7 +18,7 @@ import thumbChoDenBaoGio from '../assets/images/cho_den_bao_gio_1790960433410.jp
 import thumbMuaGioChuong from '../assets/images/mua_gio_chuong_1790875013571.jpg';
 import thumbCanhDongHoang from '../assets/images/canh_dong_hoang_1790875026105.jpg';
 import thumbChiecLuocNga from '../assets/images/chiec_luoc_nga_1790875037216.jpg';
-import thumbTacGia from '../assets/images/tac_gia_nguyen_quang_sang_1790875071267.jpg';
+import thumbTacGia from '../assets/images/tac_gia_nguyen_quang_sang_chinh_thuc.jpg';
 import projectNamBoImg from '../assets/images/project_nam_bo_1790353109519.jpg';
 import heroArtworkImg from '../assets/images/hero_lit_tech_1790353095687.jpg';
 

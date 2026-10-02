@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowDown, Feather } from 'lucide-react';
-import portraitNguyenQuangSang from '../assets/images/tac_gia_nguyen_quang_sang_1790875071267.jpg';
+import portraitNguyenQuangSang from '../assets/images/tac_gia_nguyen_quang_sang_chinh_thuc.jpg';
 
 export const Hero: React.FC = () => {
   const handleScrollToLinks = (e: React.MouseEvent<HTMLAnchorElement>) => {
