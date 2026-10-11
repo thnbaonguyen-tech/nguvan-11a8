@@ -16,7 +16,7 @@ import namBoImage from '../assets/images/project_nam_bo_1790353109519.jpg';
 
 // ==================================================
 // DỮ LIỆU CÁC TRANG BÀI VIẾT TAY NGHỊ LUẬN VĂN HỌC 11A8
-// (Đúng 7 trang khổ đứng chuẩn A4 tỷ lệ 210 : 297 theo yêu cầu)
+// (Đúng 7 trang khổ đứng chuẩn A3 theo yêu cầu)
 // Khi có ảnh chụp thực tế, chỉ cần thay thế giá trị src=""
 // ==================================================
 export const essayPages = [
@@ -31,7 +31,7 @@ export const essayPages = [
 
 export const ProjectShowcase: React.FC = () => {
   // Tabs state for Phần Dự Án Ngữ Văn 11A8
-  const [activeTab, setActiveTab] = useState<'author' | 'works' | 'tech'>('tech');
+  const [activeTab, setActiveTab] = useState<'author' | 'works' | 'tech'>('author');
 
   // Modal Lightbox state for Phần Nghị Luận Văn Học (7 trang)
   const [selectedPageIndex, setSelectedPageIndex] = useState<number | null>(null);
@@ -180,7 +180,7 @@ export const ProjectShowcase: React.FC = () => {
                 color: activeTab === 'author' ? '#FFFFFF' : 'var(--text-secondary)',
               }}
             >
-              Chân dung tác giả
+              Tiểu sử tác giả
             </button>
             <button
               onClick={() => setActiveTab('works')}
@@ -369,7 +369,7 @@ export const ProjectShowcase: React.FC = () => {
                     }}
                   >
                     <span className="text-xs font-semibold block" style={{ color: 'var(--gold)' }}>Hệ thống video</span>
-                    <span className="text-xs mt-1 block" style={{ color: 'var(--text-secondary)' }}>Chuỗi 09 video YouTube phân tích &amp; tư liệu</span>
+                    <span className="text-xs mt-1 block" style={{ color: 'var(--text-secondary)' }}>Chuỗi 10 video YouTube phân tích &amp; tư liệu</span>
                   </div>
                   <div 
                     className="p-3 rounded-lg"
@@ -646,7 +646,7 @@ export const ProjectShowcase: React.FC = () => {
                               className="text-[10px] font-mono mt-1 opacity-70"
                               style={{ color: 'var(--text-muted)' }}
                             >
-                              Bản chụp A4 viết tay
+                              Bản chụp A3 viết tay
                             </span>
                           </div>
 
@@ -942,7 +942,7 @@ export const ProjectShowcase: React.FC = () => {
                       {essayPages[selectedPageIndex].alt}
                     </h4>
                     <p className="mt-2 text-xs sm:text-sm font-light text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
-                      Khung trình chiếu bản gốc viết tay kích thước tiêu chuẩn A4 (tỷ lệ 210 : 297).
+                      Khung trình chiếu bản gốc viết tay kích thước tiêu chuẩn A3.
                     </p>
                     <p className="mt-4 text-[11px] font-mono text-amber-600 dark:text-amber-400 bg-amber-400/10 py-1.5 px-3 rounded-full inline-block border border-amber-400/20">
                       Sẵn sàng tải lên hình ảnh trang viết tay thực tế

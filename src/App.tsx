@@ -8,6 +8,7 @@ import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { InteractiveCards } from './components/InteractiveCards';
 import { AboutGroup } from './components/AboutGroup';
+import { MomentsGallery } from './components/MomentsGallery';
 import { ProjectShowcase } from './components/ProjectShowcase';
 import { QRCodeSection } from './components/QRCodeSection';
 import { Footer } from './components/Footer';
@@ -59,23 +60,11 @@ export default function App() {
   // Load saved links and custom QR from localStorage if user previously edited them
   useEffect(() => {
     try {
-      // Clear old 10-item legacy cache if present
       for (const key of STORAGE_KEYS_LINKS) {
         const saved = localStorage.getItem(key);
         if (saved) {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed) && parsed.length === 10) {
-            localStorage.removeItem(key);
-          }
-        }
-      }
-
-      for (const key of STORAGE_KEYS_LINKS) {
-        const saved = localStorage.getItem(key);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length === 9) {
-            // Keep hardcoded titles, descriptions, taglines and URLs from INITIAL_PROJECT_LINKS fixed
             const merged = INITIAL_PROJECT_LINKS.map((initialItem, idx) => {
               const savedItem = parsed[idx];
               if (!savedItem) return initialItem;
@@ -86,11 +75,13 @@ export default function App() {
                 tagline: initialItem.tagline,
                 literaryNote: initialItem.literaryNote,
                 buttonText: savedItem.buttonText || initialItem.buttonText,
-                url: initialItem.url,
+                url: savedItem.url || initialItem.url,
               };
             });
             setLinks(merged);
             break;
+          } else {
+            localStorage.removeItem(key);
           }
         }
       }
@@ -157,7 +148,10 @@ export default function App() {
             onOpenConfig={() => setIsConfigOpen(true)} 
           />
 
-          {/* 3. Phần Giới Thiệu Nhóm - VỀ DỰ ÁN TẬP THỂ 11A8 */}
+          {/* 3. Phần Khoảnh Khắc 11A8 - HÌNH ẢNH HOẠT ĐỘNG NHÓM & CHUẨN BỊ TƯ LIỆU */}
+          <MomentsGallery />
+
+          {/* 4. Phần Giới Thiệu Nhóm - VỀ DỰ ÁN TẬP THỂ 11A8 */}
           <AboutGroup />
 
           {/* 4. Phần Dự Án - DỰ ÁN NGỮ VĂN 11A8 & Nguyễn Quang Sáng */}

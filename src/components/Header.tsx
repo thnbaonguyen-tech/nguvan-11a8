@@ -21,6 +21,7 @@ export const Header: React.FC<HeaderProps> = ({ isDarkMode = true, onToggleTheme
   const navLinks = [
     { label: 'TRANG CHỦ', href: '#hero' },
     { label: 'TƯ LIỆU', href: '#links' },
+    { label: 'KHOẢNH KHẮC', href: '#khoanh-khac' },
     { label: 'GIỚI THIỆU', href: '#about' },
     { label: 'DỰ ÁN', href: '#project' },
     { label: 'MÃ QR', href: '#qr-code' },

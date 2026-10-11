@@ -19,6 +19,7 @@ import thumbMuaGioChuong from '../assets/images/mua_gio_chuong_1790875013571.jpg
 import thumbCanhDongHoang from '../assets/images/canh_dong_hoang_1790875026105.jpg';
 import thumbChiecLuocNga from '../assets/images/chiec_luoc_nga_1790875037216.jpg';
 import thumbTacGia from '../assets/images/tac_gia_nguyen_quang_sang_chinh_thuc.jpg';
+import thumbTacGiaThat from '../assets/images/tac_gia_nguyen_quang_sang_1790875071267.jpg';
 import projectNamBoImg from '../assets/images/project_nam_bo_1790353109519.jpg';
 import heroArtworkImg from '../assets/images/hero_lit_tech_1790353095687.jpg';
 
@@ -85,11 +86,18 @@ const EDITORIAL_THUMBNAILS: Record<number, EditorialThumbnailConfig> = {
   },
   9: {
     image: thumbTacGia,
-    categoryTag: 'HỒ SƠ TÁC GIẢ',
+    categoryTag: 'HỒ SƠ TÁC GIẢ (AI)',
     badgeCode: 'NQS-09',
-    subTheme: 'Nhà văn Nguyễn Quang Sáng (1932 - 2014)',
+    subTheme: 'Nhà văn Nguyễn Quang Sáng (Bản AI)',
+  },
+  10: {
+    image: thumbTacGiaThat,
+    categoryTag: 'HỒ SƠ TÁC GIẢ (THẬT)',
+    badgeCode: 'NQS-10',
+    subTheme: 'Nhà văn Nguyễn Quang Sáng (Bản Thật)',
   },
 };
+
 
 interface ThoiThoAuThumbnailProps {
   isHovered: boolean;
@@ -667,22 +675,23 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ item }) => {
 };
 
 export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => {
-  // Ensure exactly the 9 video cards (order 1 through 9)
-  const nineLinks = links
-    .filter((l) => l.order >= 1 && l.order <= 9)
+  // Ensure the video cards (order 1 through 10)
+  const tenLinks = links
+    .filter((l) => l.order >= 1 && l.order <= 10)
     .sort((a, b) => a.order - b.order);
 
   // Active theme filter: 'all' | 'tac-pham' | 'chuyen-de' | 'tu-lieu'
   const [activeFilter, setActiveFilter] = useState<'all' | 'tac-pham' | 'chuyen-de' | 'tu-lieu'>('all');
 
   const filteredLinks = activeFilter === 'all'
-    ? nineLinks
-    : nineLinks.filter((l) => {
+    ? tenLinks
+    : tenLinks.filter((l) => {
         if (activeFilter === 'tac-pham') return l.order <= 4;
         if (activeFilter === 'chuyen-de') return l.order >= 5 && l.order <= 7;
-        if (activeFilter === 'tu-lieu') return l.order >= 8 && l.order <= 9;
+        if (activeFilter === 'tu-lieu') return l.order >= 8 && l.order <= 10;
         return true;
       });
+
 
   return (
     <section id="links" className="relative py-20 lg:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
@@ -797,7 +806,7 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
               }}
             >
               <Layers className="w-3.5 h-3.5 text-sky-500 dark:text-sky-400" />
-              <span>Hệ thống 09 tư liệu tương tác</span>
+              <span>Hệ thống 10 tư liệu tương tác</span>
             </span>
           </div>
         </div>
@@ -831,19 +840,19 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
             >
               <span>TRIỂN LÃM SỐ NGUYỄN QUANG SÁNG</span>
               <span>·</span>
-              <span>09 TƯ LIỆU ĐIỆN ẢNH &amp; VĂN HỌC</span>
+              <span>10 TƯ LIỆU ĐIỆN ẢNH &amp; VĂN HỌC</span>
             </div>
             <h3 
               className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight uppercase font-display"
               style={{ color: 'var(--text-primary)' }}
             >
-              BỘ SƯU TẬP 09 TƯ LIỆU CHỌN LỌC
+              BỘ SƯU TẬP 10 TƯ LIỆU CHỌN LỌC
             </h3>
             <p 
               className="mt-2 text-sm sm:text-base font-serif italic max-w-2xl"
               style={{ color: 'var(--text-secondary)' }}
             >
-              Hệ thống 9 tư liệu số được tổ chức đối xứng theo 3 chuyên đề: Tác phẩm &amp; Điện ảnh (01–04), Video &amp; Chuyên đề (05–07), và Tư liệu &amp; Chân dung (08–09).
+              Hệ thống 10 tư liệu số được tổ chức theo 3 chuyên đề: Tác phẩm &amp; Điện ảnh (01–04), Video &amp; Chuyên đề (05–07), và Tư liệu &amp; Chân dung (08–10 gồm Bản AI &amp; Bản Thật).
             </p>
           </div>
 
@@ -863,7 +872,7 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
                   : { color: 'var(--text-secondary)' }
               }
             >
-              TẤT CẢ (09)
+              TẤT CẢ (10)
             </button>
             <button
               onClick={() => setActiveFilter('tac-pham')}
@@ -911,11 +920,12 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
                   : { color: 'var(--text-secondary)' }
               }
             >
-              03 · TƯ LIỆU &amp; CHÂN DUNG (08–09)
+              03 · TƯ LIỆU &amp; CHÂN DUNG (08–10)
             </button>
           </div>
         </div>
       </div>
+
 
       {/* ==================================================
           THE 3 × 3 SYMMETRICAL GRID: EXACTLY 9 CARDS
@@ -962,7 +972,7 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
           className="mt-3 text-xs font-mono"
           style={{ color: 'var(--text-muted)' }}
         >
-          09/09 Video YouTube · Dự án Ngữ văn tập thể 11A8
+          10/10 Video YouTube · Dự án Ngữ văn tập thể 11A8
         </p>
       </div>
 

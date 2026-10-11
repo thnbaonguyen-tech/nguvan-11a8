@@ -27,7 +27,8 @@ export const LINKS = {
   youtube6: 'https://youtu.be/T2MJY6r3s7A',                                                      // Mùa Gió Chướng
   youtube7: 'https://youtu.be/t1l6vvN8jdk',                                                      // Cánh Đồng Hoang
   youtube8: 'https://youtube.com/shorts/v5XX04i5ALQ?si=jGSk1FsxnMQSvq9s',                        // Chiếc Lược Ngà (Shorts)
-  youtube9: 'https://youtu.be/SQ46_GbxUFg',                                                      // Tiểu sử tác giả Nguyễn Quang Sáng
+  youtube9: 'https://youtu.be/SQ46_GbxUFg',                                                      // Tiểu sử tác giả Nguyễn Quang Sáng (Bản AI)
+  youtube10: 'https://m.youtube.com/watch?si=a8Q9WDOppJYKj8c8&v=5BwaEMOpEiA&feature=youtu.be', // Tiểu sử tác giả Nguyễn Quang Sáng (Bản Thật)
 
   // CÁC NỀN TẢNG MẠNG XÃ HỘI, BẢNG TIN TƯƠNG TÁC & TÀI NGUYÊN BỔ TRỢ
   tiktok: 'https://www.tiktok.com',
@@ -251,14 +252,14 @@ export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
     order: 9,
     platform: 'YouTube',
     category: 'youtube',
-    title: 'Tiểu sử tác giả Nguyễn Quang Sáng',
-    description: 'Audio kịch truyền thanh',
+    title: 'Tiểu sử tác giả Nguyễn Quang Sáng (Bản AI)',
+    description: 'Audio kịch truyền thanh · AI',
     tagline: 'Một đời cầm bút, một đời nặng tình với đất và người phương Nam.',
-    literaryNote: 'Nguyễn Quang Sáng – nhà văn chiến sĩ cả cuộc đời gắn bó máu thịt với chiến trường miền Nam và dòng sông Cửu Long huyền thoại. Văn phong của ông mộc mạc, tự nhiên như hơi thở đời thường nhưng chất chứa triết lý nhân sinh sâu sắc và nghĩa tình đậm đà. Đoạn phim tư liệu là chiếc cầu nối giúp độc giả thấu hiểu cội nguồn cảm hứng và tài hoa của người cầm bút tài danh.',
+    literaryNote: 'Nguyễn Quang Sáng – nhà văn chiến sĩ cả cuộc đời gắn bó máu thịt với chiến trường miền Nam và dòng sông Cửu Long huyền thoại. Phiên bản phục dựng giọng đọc & công nghệ số hóa AI do tập thể 11A8 thực hiện.',
     url: LINKS.youtube9,
     youtubeId: 'SQ46_GbxUFg',
     exhibitionCategory: 'tu-lieu',
-    placeholderPrompt: 'DÁN LINK YOUTUBE 09',
+    placeholderPrompt: 'DÁN LINK YOUTUBE 09 (BẢN AI)',
     colorTheme: {
       accent: 'from-amber-500/20 via-purple-500/10 to-transparent',
       border: 'hover:border-amber-400/50',
@@ -266,4 +267,25 @@ export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
       badge: 'text-amber-300 bg-amber-950/60 border-amber-400/30',
     },
   },
+  {
+    id: 'link-10',
+    order: 10,
+    platform: 'YouTube',
+    category: 'youtube',
+    title: 'Tiểu sử tác giả Nguyễn Quang Sáng (Bản Thật)',
+    description: 'Tư liệu thực tế · Giọng đọc thật',
+    tagline: 'Thước phim tư liệu chân thực về cuộc đời và sự nghiệp nhà văn.',
+    literaryNote: 'Thước phim tư liệu chân thực ghi lại hình ảnh, giọng nói và dấu ấn thực tế của nhà văn Nguyễn Quang Sáng cùng tập thể lớp 11A8. Tư liệu thực tế quý báu cho hành trình học tập và nghiên cứu.',
+    url: LINKS.youtube10,
+    youtubeId: '5BwaEMOpEiA',
+    exhibitionCategory: 'tu-lieu',
+    placeholderPrompt: 'DÁN LINK YOUTUBE 10 (BẢN THẬT)',
+    colorTheme: {
+      accent: 'from-amber-500/20 via-emerald-500/10 to-transparent',
+      border: 'hover:border-amber-400/50',
+      glow: 'group-hover:shadow-[0_10px_30px_rgba(16,185,129,0.2)]',
+      badge: 'text-emerald-300 bg-emerald-950/60 border-emerald-400/30',
+    },
+  },
 ];
+

@@ -29,7 +29,7 @@ export const Footer: React.FC<FooterProps> = () => {
               “Made with creativity by 11A8” · Nguyễn Quang Sáng &amp; Văn học Nam Bộ
             </p>
             <p className="mt-1 text-xs text-slate-400 font-light">
-              Dự án học tập liên môn Ngữ văn 11 &amp; Công nghệ thông tin · Hệ thống 09 tư liệu tương tác
+              Dự án học tập liên môn Ngữ văn 11 &amp; Công nghệ thông tin · Hệ thống 10 tư liệu tương tác
             </p>
           </div>
         </div>

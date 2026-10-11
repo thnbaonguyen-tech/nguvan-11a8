@@ -464,7 +464,7 @@ img, svg, iframe, video {
 .animate-class-marquee {
   display: flex;
   width: max-content;
-  animation: classPhotoMarquee 30s linear infinite;
+  animation: classPhotoMarquee 32s linear infinite;
   will-change: transform;
 }
 
@@ -493,4 +493,15 @@ img, svg, iframe, video {
 
 .animate-essay-marquee:hover {
   animation-play-state: paused;
+}
+
+/* --------------------------------------------------
+   NO SCROLLBAR UTILITY (Cross-browser)
+   -------------------------------------------------- */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
