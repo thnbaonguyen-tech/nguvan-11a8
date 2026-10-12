@@ -505,3 +505,58 @@ img, svg, iframe, video {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* --------------------------------------------------
+   FULLSCREEN IMAGE LIGHTBOX / VIEWER (STRICT OVERRIDE)
+   -------------------------------------------------- */
+.lightbox-modal {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: rgba(0, 0, 0, 0.93) !important;
+  overflow: hidden !important;
+}
+
+.lightbox-stage {
+  position: relative !important;
+  width: 100% !important;
+  height: 100% !important;
+  flex: 1 1 0% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 0 !important;
+}
+
+.lightbox-modal img,
+.lightbox-stage img,
+img.lightbox-image {
+  width: 92vw !important;
+  height: 82vh !important;
+  max-width: 92vw !important;
+  max-height: 82vh !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  object-fit: contain !important;
+  image-rendering: auto !important;
+  -webkit-font-smoothing: antialiased !important;
+  margin: auto !important;
+}
+
+@media (max-width: 768px) {
+  .lightbox-modal img,
+  .lightbox-stage img,
+  img.lightbox-image {
+    width: 94vw !important;
+    height: 78vh !important;
+    max-width: 94vw !important;
+    max-height: 78vh !important;
+  }
+}
+

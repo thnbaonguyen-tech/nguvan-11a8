@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   Play, 
   ExternalLink, 
@@ -460,6 +460,12 @@ interface ResourceCardProps {
   item: ProjectLinkItem;
 }
 
+const getSourceLabel = (order: number): string => {
+  if (order === 9) return '11A8 · AI';
+  if (order === 10) return '11A8 · TỰ LÀM';
+  return 'NGUỒN YOUTUBE';
+};
+
 export const ResourceCard: React.FC<ResourceCardProps> = ({ item }) => {
   const [isHovered, setIsHovered] = useState(false);
   const isDrive = item.category === 'drive' || item.url.includes('drive.google');
@@ -640,29 +646,29 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ item }) => {
 
         {/* Bottom Bar: Platform Badge & Action */}
         <div 
-          className="mt-4 pt-3 flex items-center justify-between"
+          className="mt-4 pt-3 flex items-center justify-between gap-2"
           style={{ borderTop: '1px solid var(--border)' }}
         >
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 shrink-0">
             {isDrive ? (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold tracking-wider text-sky-600 dark:text-sky-300 bg-sky-500/10 border border-sky-500/30">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold tracking-wider text-sky-600 dark:text-sky-300 bg-sky-500/10 border border-sky-500/30 shrink-0">
                 DRIVE
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold tracking-wider text-red-600 dark:text-red-300 bg-red-500/10 border border-red-500/30">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold tracking-wider text-red-600 dark:text-red-300 bg-red-500/10 border border-red-500/30 shrink-0">
                 YOUTUBE
               </span>
             )}
             <span 
-              className="text-[11px] font-mono"
+              className="text-[11px] font-mono whitespace-nowrap"
               style={{ color: 'var(--text-muted)' }}
             >
-              11A8
+              {getSourceLabel(item.order)}
             </span>
           </div>
 
           <div 
-            className="inline-flex items-center gap-1 text-xs font-semibold transition-colors"
+            className="inline-flex items-center gap-1 text-xs font-semibold transition-colors shrink-0"
             style={{ color: 'var(--gold)' }}
           >
             <span className="text-[11px] tracking-wide font-medium">Mở tư liệu</span>
@@ -676,21 +682,69 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ item }) => {
 
 export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => {
   // Ensure the video cards (order 1 through 10)
-  const tenLinks = links
-    .filter((l) => l.order >= 1 && l.order <= 10)
-    .sort((a, b) => a.order - b.order);
+  const tenLinks = useMemo(() => {
+    return links
+      .filter((l) => l.order >= 1 && l.order <= 10)
+      .sort((a, b) => a.order - b.order);
+  }, [links]);
 
   // Active theme filter: 'all' | 'tac-pham' | 'chuyen-de' | 'tu-lieu'
   const [activeFilter, setActiveFilter] = useState<'all' | 'tac-pham' | 'chuyen-de' | 'tu-lieu'>('all');
 
-  const filteredLinks = activeFilter === 'all'
-    ? tenLinks
-    : tenLinks.filter((l) => {
-        if (activeFilter === 'tac-pham') return l.order <= 4;
-        if (activeFilter === 'chuyen-de') return l.order >= 5 && l.order <= 7;
-        if (activeFilter === 'tu-lieu') return l.order >= 8 && l.order <= 10;
-        return true;
-      });
+  // Helper to determine the category for a link
+  const getCategory = (l: ProjectLinkItem) => {
+    if (l.exhibitionCategory) return l.exhibitionCategory;
+    if (l.order <= 4 || l.order === 8) return 'tac-pham';
+    if (l.order >= 5 && l.order <= 7) return 'chuyen-de';
+    return 'tu-lieu';
+  };
+
+  const tacPhamLinks = useMemo(() => tenLinks.filter((l) => getCategory(l) === 'tac-pham'), [tenLinks]);
+  const chuyenDeLinks = useMemo(() => tenLinks.filter((l) => getCategory(l) === 'chuyen-de'), [tenLinks]);
+  const tuLieuLinks = useMemo(() => tenLinks.filter((l) => getCategory(l) === 'tu-lieu'), [tenLinks]);
+
+  const filteredLinks = useMemo(() => {
+    if (activeFilter === 'tac-pham') return tacPhamLinks;
+    if (activeFilter === 'chuyen-de') return chuyenDeLinks;
+    if (activeFilter === 'tu-lieu') return tuLieuLinks;
+    return tenLinks;
+  }, [activeFilter, tenLinks, tacPhamLinks, chuyenDeLinks, tuLieuLinks]);
+
+  // Helper to dynamically calculate continuous number ranges (e.g., '01–04, 08', '05–07', '09–10')
+  const formatOrderRanges = (items: ProjectLinkItem[]): string => {
+    if (!items || items.length === 0) return '0';
+    const orders = items.map((item) => item.order).sort((a, b) => a - b);
+    const ranges: string[] = [];
+    let start = orders[0];
+    let prev = orders[0];
+
+    for (let i = 1; i < orders.length; i++) {
+      const curr = orders[i];
+      if (curr === prev + 1) {
+        prev = curr;
+      } else {
+        if (start === prev) {
+          ranges.push(String(start).padStart(2, '0'));
+        } else {
+          ranges.push(`${String(start).padStart(2, '0')}–${String(prev).padStart(2, '0')}`);
+        }
+        start = curr;
+        prev = curr;
+      }
+    }
+
+    if (start === prev) {
+      ranges.push(String(start).padStart(2, '0'));
+    } else {
+      ranges.push(`${String(start).padStart(2, '0')}–${String(prev).padStart(2, '0')}`);
+    }
+
+    return ranges.join(', ');
+  };
+
+  const tacPhamRange = formatOrderRanges(tacPhamLinks);
+  const chuyenDeRange = formatOrderRanges(chuyenDeLinks);
+  const tuLieuRange = formatOrderRanges(tuLieuLinks);
 
 
   return (
@@ -852,7 +906,7 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
               className="mt-2 text-sm sm:text-base font-serif italic max-w-2xl"
               style={{ color: 'var(--text-secondary)' }}
             >
-              Hệ thống 10 tư liệu số được tổ chức theo 3 chuyên đề: Tác phẩm &amp; Điện ảnh (01–04), Video &amp; Chuyên đề (05–07), và Tư liệu &amp; Chân dung (08–10 gồm Bản AI &amp; Bản Thật).
+              {`Hệ thống ${tenLinks.length} tư liệu số được tổ chức theo 3 chuyên đề: Tác phẩm & Điện ảnh (${tacPhamRange}), Video & Chuyên đề (${chuyenDeRange}), và Tư liệu tác giả – 11A8 (${tuLieuRange} gồm Bản AI & Bản Thật).`}
             </p>
           </div>
 
@@ -872,7 +926,7 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
                   : { color: 'var(--text-secondary)' }
               }
             >
-              TẤT CẢ (10)
+              TẤT CẢ ({tenLinks.length})
             </button>
             <button
               onClick={() => setActiveFilter('tac-pham')}
@@ -888,7 +942,7 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
                   : { color: 'var(--text-secondary)' }
               }
             >
-              01 · TÁC PHẨM &amp; ĐIỆN ẢNH (01–04)
+              01 · TÁC PHẨM &amp; ĐIỆN ẢNH ({tacPhamRange})
             </button>
             <button
               onClick={() => setActiveFilter('chuyen-de')}
@@ -904,7 +958,7 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
                   : { color: 'var(--text-secondary)' }
               }
             >
-              02 · VIDEO &amp; CHUYÊN ĐỀ (05–07)
+              02 · VIDEO &amp; CHUYÊN ĐỀ ({chuyenDeRange})
             </button>
             <button
               onClick={() => setActiveFilter('tu-lieu')}
@@ -920,7 +974,7 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
                   : { color: 'var(--text-secondary)' }
               }
             >
-              03 · TƯ LIỆU &amp; CHÂN DUNG (08–10)
+              03 · TƯ LIỆU TÁC GIẢ – 11A8
             </button>
           </div>
         </div>

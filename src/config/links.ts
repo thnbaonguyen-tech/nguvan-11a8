@@ -82,7 +82,7 @@ export interface ProjectLinkItem {
 }
 
 export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
-  // 01 — TÁC PHẨM & ĐIỆN ẢNH (01, 02, 03, 04)
+  // 01 — TÁC PHẨM & ĐIỆN ẢNH (01, 02, 03, 04, 08)
   {
     id: 'link-01',
     order: 1,
@@ -226,7 +226,7 @@ export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
     },
   },
 
-  // 03 — TƯ LIỆU & TRIỂN LÃM (08, 09, 10)
+  // 03 — TƯ LIỆU TÁC GIẢ – 11A8 (09, 10)
   {
     id: 'link-08',
     order: 8,
@@ -238,7 +238,7 @@ export const INITIAL_PROJECT_LINKS: ProjectLinkItem[] = [
     literaryNote: 'Kiệt tác văn học xúc động đến nghẹn ngào về tình phụ tử thiêng liêng giữa anh Sáu và bé Thu trong hoàn cảnh éo le của chiến tranh. Cây lược ngà chưa kịp chải mái tóc con đã trở thành kỷ vật bất tử, kết tinh tình cha con vượt lên trên ranh giới sống chết. Tác phẩm gieo vào lòng người đọc niềm xúc động sâu xa về sự hy sinh thầm lặng của những người lính vì độc lập dân tộc.',
     url: LINKS.youtube8,
     youtubeId: 'v5XX04i5ALQ',
-    exhibitionCategory: 'tu-lieu',
+    exhibitionCategory: 'tac-pham',
     placeholderPrompt: 'DÁN LINK YOUTUBE 08',
     colorTheme: {
       accent: 'from-amber-500/20 via-rose-500/10 to-transparent',
