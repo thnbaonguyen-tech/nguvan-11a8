@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowDown, Feather } from 'lucide-react';
+import { ArrowDown, Feather, BookOpen } from 'lucide-react';
 import portraitNguyenQuangSang from '../assets/images/tac_gia_nguyen_quang_sang_chinh_thuc.jpg';
 
 export const Hero: React.FC = () => {
@@ -14,6 +14,17 @@ export const Hero: React.FC = () => {
   const handleScrollToAbout = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const target = document.getElementById('about');
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleScrollToAuthor = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
+    e.preventDefault();
+    // Ensure tab in ProjectShowcase is switched to author tab
+    window.dispatchEvent(new CustomEvent('show-author-tab'));
+
+    const target = document.getElementById('tieu-su-tac-gia');
     if (target) {
       target.scrollIntoView({ behavior: 'smooth' });
     }
@@ -141,6 +152,25 @@ export const Hero: React.FC = () => {
                 />
                 <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_40px_rgba(0,0,0,0.35)]" />
 
+                {/* Quick-action interactive button: TÁC GIẢ */}
+                <div className="absolute top-3.5 right-3.5 z-10">
+                  <a
+                    href="#tieu-su-tac-gia"
+                    onClick={handleScrollToAuthor}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-bold tracking-wider backdrop-blur-md transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg cursor-pointer group"
+                    style={{
+                      backgroundColor: 'var(--bg-card)',
+                      border: '1px solid var(--gold-border)',
+                      color: 'var(--gold)',
+                    }}
+                    title="Xem tiểu sử & sự nghiệp tác giả Nguyễn Quang Sáng"
+                  >
+                    <BookOpen className="w-3.5 h-3.5" />
+                    <span>TÁC GIẢ</span>
+                    <ArrowDown className="w-3 h-3 transition-transform duration-300 group-hover:translate-y-0.5" />
+                  </a>
+                </div>
+
                 {/* Bottom Information Panel focused ONLY on author Nguyễn Quang Sáng */}
                 <div 
                   className="absolute bottom-4 left-4 right-4 p-4 sm:p-4.5 rounded-xl backdrop-blur-md flex items-center justify-between shadow-xl"
@@ -151,12 +181,15 @@ export const Hero: React.FC = () => {
                 >
                   <div className="space-y-0.5 pr-3">
                     <div className="flex items-center gap-2">
-                      <span 
-                        className="text-[10px] sm:text-xs font-mono tracking-[0.2em] uppercase font-bold" 
+                      <a
+                        href="#tieu-su-tac-gia"
+                        onClick={handleScrollToAuthor}
+                        className="text-[10px] sm:text-xs font-mono tracking-[0.2em] uppercase font-bold hover:underline cursor-pointer" 
                         style={{ color: 'var(--gold)' }}
+                        title="Cuộn tới tiểu sử tác giả"
                       >
                         TÁC GIẢ
-                      </span>
+                      </a>
                       <span className="text-[10px] font-mono text-white/30">·</span>
                       <span 
                         className="text-[10px] sm:text-xs font-mono font-medium" 
@@ -181,17 +214,22 @@ export const Hero: React.FC = () => {
                     </p>
                   </div>
 
-                  <div 
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-sm"
+                  {/* Interactive Button TÁC GIẢ */}
+                  <a
+                    href="#tieu-su-tac-gia"
+                    onClick={handleScrollToAuthor}
+                    className="h-10 px-3.5 sm:px-4 rounded-xl flex items-center justify-center gap-2 shrink-0 shadow-md transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer group"
                     style={{
                       backgroundColor: 'var(--gold-soft)',
                       border: '1px solid var(--gold-border)',
                       color: 'var(--gold)',
                     }}
-                    title="Nguyễn Quang Sáng (1932 – 2014)"
+                    title="Xem tiểu sử & sự nghiệp tác giả Nguyễn Quang Sáng"
                   >
-                    <Feather className="w-5 h-5 stroke-[1.75]" />
-                  </div>
+                    <Feather className="w-4 h-4 stroke-[2]" />
+                    <span className="text-xs font-mono font-bold tracking-wider">TÁC GIẢ</span>
+                    <ArrowDown className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-y-0.5" />
+                  </a>
                 </div>
 
               </div>

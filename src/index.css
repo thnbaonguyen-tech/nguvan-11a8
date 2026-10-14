@@ -496,6 +496,29 @@ img, svg, iframe, video {
 }
 
 /* --------------------------------------------------
+   AUTHOR PHOTO MARQUEE ANIMATION (Smooth 28s Loop)
+   -------------------------------------------------- */
+@keyframes authorPhotoMarquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-author-marquee {
+  display: flex;
+  width: max-content;
+  animation: authorPhotoMarquee 28s linear infinite;
+  will-change: transform;
+}
+
+.animate-author-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* --------------------------------------------------
    NO SCROLLBAR UTILITY (Cross-browser)
    -------------------------------------------------- */
 .no-scrollbar::-webkit-scrollbar {
@@ -558,5 +581,23 @@ img.lightbox-image {
     max-width: 94vw !important;
     max-height: 78vh !important;
   }
+}
+
+/* --------------------------------------------------
+   DOWNWARD SMOOTH FADE-IN ANIMATION
+   -------------------------------------------------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 

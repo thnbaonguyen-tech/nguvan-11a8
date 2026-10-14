@@ -139,6 +139,7 @@ const PILLAR_EXPANDED_DETAILS: Record<string, PillarDetail> = {
 
 export const AboutGroup: React.FC = () => {
   const [activeKeyword, setActiveKeyword] = useState<number>(0);
+  const [mobileExpandedIndex, setMobileExpandedIndex] = useState<number | null>(null);
 
   const keywords = [
     {
@@ -189,6 +190,10 @@ export const AboutGroup: React.FC = () => {
 
   const handleCardClick = (index: number) => {
     setActiveKeyword(index);
+  };
+
+  const handleMobileCardClick = (index: number) => {
+    setMobileExpandedIndex((prev) => (prev === index ? null : index));
   };
 
   // Reusable detail renderer for both Desktop (below 4 cards) and Mobile Accordion (injected between cards)
@@ -490,35 +495,39 @@ export const AboutGroup: React.FC = () => {
         <div className="flex flex-col gap-5 md:hidden">
           {keywords.map((kw, index) => {
             const Icon = kw.icon;
-            const isSelected = activeKeyword === index;
+            const isExpanded = mobileExpandedIndex === index;
+            const detail = PILLAR_EXPANDED_DETAILS[kw.id];
 
             return (
-              <div key={`mobile-pillar-${kw.id}`} className="flex flex-col">
-                {/* Mobile Card */}
+              <div
+                key={`mobile-pillar-${kw.id}`}
+                className="rounded-2xl transition-all duration-300 border overflow-hidden select-none"
+                style={{
+                  backgroundColor: isExpanded ? 'var(--bg-surface-elevated)' : 'var(--bg-surface)',
+                  borderColor: isExpanded ? 'var(--gold)' : 'var(--border)',
+                  boxShadow: isExpanded ? 'var(--shadow)' : 'var(--shadow-sm)',
+                }}
+              >
+                {/* Mobile Card Header & Trigger Bar */}
                 <div
                   tabIndex={0}
                   role="button"
-                  aria-pressed={isSelected}
-                  onClick={() => handleCardClick(index)}
+                  aria-expanded={isExpanded}
+                  onClick={() => handleMobileCardClick(index)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
-                      handleCardClick(index);
+                      handleMobileCardClick(index);
                     }
                   }}
-                  className="group relative rounded-2xl p-6 transition-all duration-300 cursor-pointer border flex flex-col justify-between select-none"
-                  style={{
-                    backgroundColor: isSelected ? 'var(--bg-surface-elevated)' : 'var(--bg-surface)',
-                    borderColor: isSelected ? 'var(--gold)' : 'var(--border)',
-                    boxShadow: isSelected ? 'var(--shadow)' : 'var(--shadow-sm)',
-                  }}
+                  className="p-6 cursor-pointer"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
                       <div 
                         className="w-11 h-11 rounded-xl flex items-center justify-center transition-transform duration-300 shadow-sm"
                         style={{
-                          backgroundColor: isSelected ? 'var(--gold-soft)' : 'var(--bg-surface-elevated)',
+                          backgroundColor: isExpanded ? 'var(--gold-soft)' : 'var(--bg-surface-elevated)',
                           color: 'var(--gold)',
                           border: '1px solid var(--border)',
                         }}
@@ -528,9 +537,9 @@ export const AboutGroup: React.FC = () => {
                       <span 
                         className="text-xs font-mono font-bold tracking-widest px-2 py-0.5 rounded-full"
                         style={{
-                          backgroundColor: isSelected ? 'var(--gold-soft)' : 'transparent',
-                          color: isSelected ? 'var(--gold)' : 'var(--text-muted)',
-                          border: isSelected ? '1px solid var(--gold-border)' : '1px solid transparent',
+                          backgroundColor: isExpanded ? 'var(--gold-soft)' : 'transparent',
+                          color: isExpanded ? 'var(--gold)' : 'var(--text-muted)',
+                          border: isExpanded ? '1px solid var(--gold-border)' : '1px solid transparent',
                         }}
                       >
                         0{index + 1}
@@ -562,20 +571,168 @@ export const AboutGroup: React.FC = () => {
                     className="mt-4 pt-3.5 border-t flex items-center justify-between text-xs font-semibold"
                     style={{
                       borderColor: 'var(--border)',
-                      color: isSelected ? 'var(--gold)' : 'var(--text-muted)',
+                      color: isExpanded ? 'var(--gold)' : 'var(--text-muted)',
                     }}
                   >
                     <span className="font-mono uppercase tracking-wider text-[11px]">
-                      {isSelected ? 'Đang mở chi tiết' : 'Chạm để mở chi tiết'}
+                      {isExpanded ? 'Đang mở chi tiết' : 'Chạm để mở chi tiết'}
                     </span>
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isSelected ? 'rotate-180 text-amber-400' : ''}`} />
+                    <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isExpanded ? 'rotate-180 text-amber-400' : ''}`} />
                   </div>
                 </div>
 
-                {/* Mobile Accordion Expanded Box - Inserted right under the active card */}
-                {isSelected && (
-                  <div className="mt-4 mb-2 animate-fadeIn">
-                    {renderDetailContent(index)}
+                {/* Mobile Expanded Detail Box - Opens directly DOWNWARDS inside the card */}
+                {isExpanded && (
+                  <div 
+                    className="border-t animate-fadeIn px-5 pb-6 pt-5 space-y-6"
+                    style={{ borderColor: 'var(--border)' }}
+                  >
+                    {/* Tagline & Lead Paragraph */}
+                    <div>
+                      <h4 
+                        className="text-sm font-bold font-serif italic mb-2 leading-snug"
+                        style={{ color: 'var(--gold)' }}
+                      >
+                        “{detail.tagline}”
+                      </h4>
+                      <p 
+                        className="text-xs leading-relaxed font-light"
+                        style={{ color: 'var(--text-secondary)' }}
+                      >
+                        {detail.leadParagraph}
+                      </p>
+                    </div>
+
+                    {/* Metrics Row */}
+                    <div className="grid grid-cols-1 gap-2.5">
+                      {detail.metrics.map((metric, mIdx) => (
+                        <div 
+                          key={`mobile-metric-${index}-${mIdx}`}
+                          className="p-3.5 rounded-xl border flex items-center justify-between"
+                          style={{
+                            backgroundColor: 'var(--bg-surface)',
+                            borderColor: 'var(--border)',
+                          }}
+                        >
+                          <span 
+                            className="text-[11px] font-mono uppercase tracking-wider"
+                            style={{ color: 'var(--text-muted)' }}
+                          >
+                            {metric.label}
+                          </span>
+                          <span 
+                            className="text-base font-black font-display tracking-tight"
+                            style={{ color: 'var(--text-primary)' }}
+                          >
+                            {metric.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* 3 Key Highlights Specific to Selected Pillar */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <Sparkles className="w-3.5 h-3.5" style={{ color: 'var(--gold)' }} />
+                        <h5 
+                          className="text-xs font-mono font-bold uppercase tracking-wider"
+                          style={{ color: 'var(--text-primary)' }}
+                        >
+                          NỘI DUNG TRIỂN KHAI TRỌNG TÂM
+                        </h5>
+                      </div>
+
+                      <div className="flex flex-col gap-3">
+                        {detail.keyHighlights.map((hl, hIdx) => (
+                          <div 
+                            key={`mobile-hl-${index}-${hIdx}`}
+                            className="p-3.5 rounded-xl border"
+                            style={{
+                              backgroundColor: 'var(--bg-surface)',
+                              borderColor: 'var(--border-subtle)',
+                            }}
+                          >
+                            <div className="flex items-center gap-2 mb-1.5">
+                              <CheckCircle2 className="w-3.5 h-3.5 shrink-0" style={{ color: 'var(--gold)' }} />
+                              <h6 
+                                className="text-xs font-bold tracking-tight"
+                                style={{ color: 'var(--text-primary)' }}
+                              >
+                                {hl.title}
+                              </h6>
+                            </div>
+                            <p 
+                              className="text-xs leading-relaxed font-light"
+                              style={{ color: 'var(--text-secondary)' }}
+                            >
+                              {hl.description}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Tools & Workflow Footer */}
+                    <div 
+                      className="pt-4 border-t flex flex-col gap-3.5"
+                      style={{ borderColor: 'var(--border)' }}
+                    >
+                      {/* Toolstack tags */}
+                      <div>
+                        <span 
+                          className="text-[11px] font-mono font-semibold uppercase tracking-wider block mb-2"
+                          style={{ color: 'var(--text-muted)' }}
+                        >
+                          Công cụ &amp; Tài liệu:
+                        </span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {detail.techStackOrTools.map((tool, tIdx) => (
+                            <span 
+                              key={`mobile-tool-${index}-${tIdx}`}
+                              className="px-2 py-0.5 rounded-md text-[11px] font-mono font-medium"
+                              style={{
+                                backgroundColor: 'var(--bg-surface)',
+                                color: 'var(--text-primary)',
+                                border: '1px solid var(--border)',
+                              }}
+                            >
+                              {tool}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Workflow Step Indicator */}
+                      <div 
+                        className="text-[11px] font-mono font-medium py-1.5 px-2.5 rounded-lg border flex items-center gap-1.5"
+                        style={{
+                          backgroundColor: 'var(--gold-soft)',
+                          borderColor: 'var(--gold-border)',
+                          color: 'var(--gold)',
+                        }}
+                      >
+                        <Layers className="w-3.5 h-3.5 shrink-0" />
+                        <span className="leading-snug">{detail.workflowStep}</span>
+                      </div>
+
+                      {/* Collapse Button */}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleMobileCardClick(index);
+                        }}
+                        className="mt-1 w-full py-2.5 rounded-xl text-xs font-mono font-semibold border flex items-center justify-center gap-1.5 transition-colors cursor-pointer hover:bg-[var(--bg-surface-elevated)]"
+                        style={{
+                          backgroundColor: 'var(--bg-surface)',
+                          borderColor: 'var(--border)',
+                          color: 'var(--text-muted)',
+                        }}
+                      >
+                        <span>Thu gọn chi tiết</span>
+                        <ChevronDown className="w-3.5 h-3.5 rotate-180" />
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>

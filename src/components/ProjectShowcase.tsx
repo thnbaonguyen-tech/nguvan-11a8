@@ -10,9 +10,49 @@ import {
   ChevronRight, 
   ZoomIn, 
   ZoomOut, 
-  Maximize2
+  Maximize2,
+  Newspaper,
+  ExternalLink
 } from 'lucide-react';
 import namBoImage from '../assets/images/project_nam_bo_1790353109519.jpg';
+import { AUTHOR_PHOTOS } from '../config/authorPhotos';
+import { WORKS_PHOTOS } from '../config/worksPhotos';
+
+// ==================================================
+// 5 BÀI BÁO THẬT VỀ NHÀ VĂN NGUYỄN QUANG SÁNG
+// ==================================================
+export const ARTICLES = [
+  {
+    id: 'art-01',
+    title: 'Nhà văn Nguyễn Quang Sáng - chất "Phong vị Nam Bộ"',
+    source: 'Báo Nhân Dân',
+    url: 'https://nhandan.vn/nha-van-nguyen-quang-sang-chat-phong-vi-nam-bo-post848925.html'
+  },
+  {
+    id: 'art-02',
+    title: 'Nguyễn Quang Sáng bước vào nghiệp viết văn thế nào?',
+    source: 'Báo VOV',
+    url: 'https://vov.vn/van-hoa-giai-tri/nguyen-quang-sang-buoc-vao-nghiep-viet-van-the-nao-310315.vov'
+  },
+  {
+    id: 'art-03',
+    title: 'Vĩnh biệt nhà văn Nguyễn Quang Sáng',
+    source: 'Báo Thanh Niên',
+    url: 'https://thanhnien.vn/vinh-biet-nha-van-nguyen-quang-sang-185289553.htm'
+  },
+  {
+    id: 'art-04',
+    title: 'Nhà văn Nguyễn Quang Sáng: "Đại ca của tôi"',
+    source: 'Báo Tuổi Trẻ',
+    url: 'https://tuoitre.vn/nha-van-nguyen-quang-sang-dai-ca-cua-toi-593620.htm'
+  },
+  {
+    id: 'art-05',
+    title: 'Nguyễn Quang Sáng về với dòng sông tuổi thơ',
+    source: 'VnExpress',
+    url: 'https://vnexpress.net/nguyen-quang-sang-ve-voi-dong-song-tuoi-tho-2951268.html'
+  }
+];
 
 // ==================================================
 // DỮ LIỆU CÁC TRANG BÀI VIẾT TAY NGHỊ LUẬN VĂN HỌC 11A8
@@ -33,6 +73,14 @@ export const ProjectShowcase: React.FC = () => {
   // Tabs state for Phần Dự Án Ngữ Văn 11A8
   const [activeTab, setActiveTab] = useState<'author' | 'works' | 'tech'>('author');
 
+  // Modal Lightbox state for 7 Author Photos
+  const [selectedAuthorPhotoIndex, setSelectedAuthorPhotoIndex] = useState<number | null>(null);
+  const duplicatedAuthorPhotos = [...AUTHOR_PHOTOS, ...AUTHOR_PHOTOS];
+
+  // Modal Lightbox state for 7 Works Photos (from Google Drive folder 1R9qOu98T1zLCghS_vyq2moM5ieyKwmZ2)
+  const [selectedWorksPhotoIndex, setSelectedWorksPhotoIndex] = useState<number | null>(null);
+  const duplicatedWorksPhotos = [...WORKS_PHOTOS, ...WORKS_PHOTOS];
+
   // Modal Lightbox state for Phần Nghị Luận Văn Học (7 trang)
   const [selectedPageIndex, setSelectedPageIndex] = useState<number | null>(null);
   const [zoomLevel, setZoomLevel] = useState<number>(1);
@@ -44,6 +92,59 @@ export const ProjectShowcase: React.FC = () => {
   useEffect(() => {
     setZoomLevel(1);
   }, [selectedPageIndex]);
+
+  // Listen for show-author-tab event (from Hero TÁC GIẢ button)
+  useEffect(() => {
+    const handleSwitchToAuthor = () => {
+      setActiveTab('author');
+    };
+    window.addEventListener('show-author-tab', handleSwitchToAuthor);
+    return () => window.removeEventListener('show-author-tab', handleSwitchToAuthor);
+  }, []);
+
+  // Keyboard navigation & accessibility for Author Photos Lightbox
+  useEffect(() => {
+    if (selectedAuthorPhotoIndex === null) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedAuthorPhotoIndex(null);
+      } else if (e.key === 'ArrowLeft') {
+        setSelectedAuthorPhotoIndex((prev) => 
+          prev !== null ? (prev === 0 ? AUTHOR_PHOTOS.length - 1 : prev - 1) : null
+        );
+      } else if (e.key === 'ArrowRight') {
+        setSelectedAuthorPhotoIndex((prev) => 
+          prev !== null ? (prev === AUTHOR_PHOTOS.length - 1 ? 0 : prev + 1) : null
+        );
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedAuthorPhotoIndex]);
+
+  // Keyboard navigation & accessibility for Works Photos Lightbox
+  useEffect(() => {
+    if (selectedWorksPhotoIndex === null) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedWorksPhotoIndex(null);
+      } else if (e.key === 'ArrowLeft') {
+        setSelectedWorksPhotoIndex((prev) => 
+          prev !== null ? (prev === 0 ? WORKS_PHOTOS.length - 1 : prev - 1) : null
+        );
+      } else if (e.key === 'ArrowRight') {
+        setSelectedWorksPhotoIndex((prev) => 
+          prev !== null ? (prev === WORKS_PHOTOS.length - 1 ? 0 : prev + 1) : null
+        );
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedWorksPhotoIndex]);
 
   // Keyboard navigation & accessibility for Lightbox
   useEffect(() => {
@@ -206,7 +307,7 @@ export const ProjectShowcase: React.FC = () => {
         </div>
 
         {/* Tab Content Box + Side Features */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-24">
+        <div id="tieu-su-tac-gia" className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-24 scroll-mt-28">
           
           {/* Main Content Area (8 Cols) */}
           <div 
@@ -273,6 +374,93 @@ export const ProjectShowcase: React.FC = () => {
                     <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>Đậm chất Nam Bộ, chân thực, cảm động</span>
                   </div>
                 </div>
+
+                {/* --------------------------------------------------
+                    DẢI 8 ẢNH TƯ LIỆU NGUYỄN QUANG SÁNG (HORIZONTAL AUTO-SCROLL MARQUEE)
+                    -------------------------------------------------- */}
+                <div className="mt-5 pt-4 border-t" style={{ borderColor: 'var(--border)' }}>
+                  <div className="flex items-center justify-between mb-2.5 px-0.5">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: 'var(--gold)' }} />
+                      <span className="text-[11px] sm:text-xs font-mono font-semibold uppercase tracking-wider" style={{ color: 'var(--gold)' }}>
+                        Hình ảnh tư liệu tác giả
+                      </span>
+                      <span className="text-[11px] font-mono text-zinc-500">·</span>
+                      <span className="text-[11px] font-mono" style={{ color: 'var(--text-muted)' }}>
+                        {String(AUTHOR_PHOTOS.length).padStart(2, '0')} khoảnh khắc
+                      </span>
+                    </div>
+
+                    <span className="text-[10px] font-mono tracking-wider uppercase text-zinc-400 hidden sm:inline">
+                      Cuộn tự động · Nhấp để phóng lớn
+                    </span>
+                  </div>
+
+                  {/* Infinite Marquee Container */}
+                  <div className="relative overflow-hidden rounded-xl py-0.5 no-scrollbar select-none group">
+                    {/* Left & Right subtle edge fade masks */}
+                    <div 
+                      className="absolute left-0 top-0 bottom-0 w-8 sm:w-12 z-10 pointer-events-none"
+                      style={{ background: 'linear-gradient(to right, var(--bg-surface), transparent)' }}
+                    />
+                    <div 
+                      className="absolute right-0 top-0 bottom-0 w-8 sm:w-12 z-10 pointer-events-none"
+                      style={{ background: 'linear-gradient(to left, var(--bg-surface), transparent)' }}
+                    />
+
+                    {/* Auto-scroll track */}
+                    <div className="animate-author-marquee gap-3">
+                      {duplicatedAuthorPhotos.map((photo, pIdx) => {
+                        const originalIndex = pIdx % AUTHOR_PHOTOS.length;
+                        return (
+                          <div
+                            key={`author-marquee-${pIdx}`}
+                            onClick={() => setSelectedAuthorPhotoIndex(originalIndex)}
+                            className="relative w-36 sm:w-44 h-24 sm:h-28 rounded-xl overflow-hidden shrink-0 cursor-pointer border transition-all duration-300 transform hover:scale-[1.03] group/card shadow-sm"
+                            style={{
+                              backgroundColor: 'var(--bg-secondary)',
+                              borderColor: 'var(--border)',
+                            }}
+                            title={`Nhấp để xem ảnh: ${photo.title}`}
+                          >
+                            <img
+                              src={photo.url}
+                              alt={photo.title}
+                              loading="lazy"
+                              decoding="async"
+                              referrerPolicy="no-referrer"
+                              onError={(e) => {
+                                if (e.currentTarget.src !== photo.directUrl) {
+                                  e.currentTarget.src = photo.directUrl;
+                                }
+                              }}
+                              className="w-full h-full object-cover object-center filter contrast-[1.02] brightness-[0.98] transition-transform duration-500 group-hover/card:scale-105"
+                            />
+                            
+                            {/* Hover overlay hint */}
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center justify-center gap-1.5 backdrop-blur-[1px]">
+                              <span className="text-[10px] font-mono font-bold text-white uppercase tracking-wider bg-black/60 px-2 py-0.5 rounded-md border border-white/20">
+                                Xem ảnh
+                              </span>
+                            </div>
+
+                            {/* Small number tag */}
+                            <span 
+                              className="absolute bottom-1.5 left-1.5 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded backdrop-blur-md shadow-sm"
+                              style={{
+                                backgroundColor: 'rgba(7, 11, 25, 0.82)',
+                                color: 'var(--gold)',
+                                border: '1px solid var(--gold-border)',
+                              }}
+                            >
+                              0{originalIndex + 1}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -331,6 +519,93 @@ export const ProjectShowcase: React.FC = () => {
                     <p className="text-xs font-light" style={{ color: 'var(--text-secondary)' }}>
                       Những thước phim và trang văn bất tử ghi lại sức sống quật khởi, ngoan cường của người dân vùng đầm lầy Đồng Tháp Mười.
                     </p>
+                  </div>
+                </div>
+
+                {/* --------------------------------------------------
+                    DẢI ẢNH TƯ LIỆU TÁC PHẨM & KHÔNG GIAN NGHỆ THUẬT (FILM STRIP AUTO-SCROLL MARQUEE)
+                    -------------------------------------------------- */}
+                <div className="mt-5 pt-4 border-t" style={{ borderColor: 'var(--border)' }}>
+                  <div className="flex items-center justify-between mb-2.5 px-0.5">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: 'var(--gold)' }} />
+                      <span className="text-[11px] sm:text-xs font-mono font-semibold uppercase tracking-wider" style={{ color: 'var(--gold)' }}>
+                        Hình ảnh tư liệu tác phẩm &amp; Không gian văn học
+                      </span>
+                      <span className="text-[11px] font-mono text-zinc-500">·</span>
+                      <span className="text-[11px] font-mono" style={{ color: 'var(--text-muted)' }}>
+                        {String(WORKS_PHOTOS.length).padStart(2, '0')} tư liệu
+                      </span>
+                    </div>
+
+                    <span className="text-[10px] font-mono tracking-wider uppercase text-zinc-400 hidden sm:inline">
+                      Cuộn tự động · Nhấp để phóng lớn
+                    </span>
+                  </div>
+
+                  {/* Infinite Marquee Container */}
+                  <div className="relative overflow-hidden rounded-xl py-0.5 no-scrollbar select-none group">
+                    {/* Left & Right subtle edge fade masks */}
+                    <div 
+                      className="absolute left-0 top-0 bottom-0 w-8 sm:w-12 z-10 pointer-events-none"
+                      style={{ background: 'linear-gradient(to right, var(--bg-surface), transparent)' }}
+                    />
+                    <div 
+                      className="absolute right-0 top-0 bottom-0 w-8 sm:w-12 z-10 pointer-events-none"
+                      style={{ background: 'linear-gradient(to left, var(--bg-surface), transparent)' }}
+                    />
+
+                    {/* Auto-scroll track */}
+                    <div className="animate-author-marquee gap-3">
+                      {duplicatedWorksPhotos.map((photo, pIdx) => {
+                        const originalIndex = pIdx % WORKS_PHOTOS.length;
+                        return (
+                          <div
+                            key={`works-marquee-${pIdx}`}
+                            onClick={() => setSelectedWorksPhotoIndex(originalIndex)}
+                            className="relative w-36 sm:w-44 h-24 sm:h-28 rounded-xl overflow-hidden shrink-0 cursor-pointer border transition-all duration-300 transform hover:scale-[1.03] group/card shadow-sm"
+                            style={{
+                              backgroundColor: 'var(--bg-secondary)',
+                              borderColor: 'var(--border)',
+                            }}
+                            title={`Nhấp để xem ảnh: ${photo.title}`}
+                          >
+                            <img
+                              src={photo.url}
+                              alt={photo.title}
+                              loading="lazy"
+                              decoding="async"
+                              referrerPolicy="no-referrer"
+                              onError={(e) => {
+                                if (e.currentTarget.src !== photo.directUrl) {
+                                  e.currentTarget.src = photo.directUrl;
+                                }
+                              }}
+                              className="w-full h-full object-cover object-center filter contrast-[1.02] brightness-[0.98] transition-transform duration-500 group-hover/card:scale-105"
+                            />
+                            
+                            {/* Hover overlay hint */}
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center justify-center gap-1.5 backdrop-blur-[1px]">
+                              <span className="text-[10px] font-mono font-bold text-white uppercase tracking-wider bg-black/60 px-2 py-0.5 rounded-md border border-white/20">
+                                Xem ảnh
+                              </span>
+                            </div>
+
+                            {/* Small number tag */}
+                            <span 
+                              className="absolute bottom-1.5 left-1.5 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded backdrop-blur-md shadow-sm"
+                              style={{
+                                backgroundColor: 'rgba(7, 11, 25, 0.82)',
+                                color: 'var(--gold)',
+                                border: '1px solid var(--gold-border)',
+                              }}
+                            >
+                              0{originalIndex + 1}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -417,9 +692,9 @@ export const ProjectShowcase: React.FC = () => {
             </div>
           </div>
 
-          {/* Side Feature Box: Literary Quotes & Key Themes (4 Cols) */}
+          {/* Side Feature Box: CÁC BÀI BÁO VỀ NGUYỄN QUANG SÁNG (4 Cols) */}
           <div 
-            className="lg:col-span-4 rounded-2xl p-7 shadow-xl flex flex-col justify-between"
+            className="lg:col-span-4 rounded-2xl p-6 sm:p-7 shadow-xl flex flex-col justify-between"
             style={{
               backgroundColor: 'var(--bg-surface)',
               border: '1px solid var(--border)',
@@ -427,77 +702,100 @@ export const ProjectShowcase: React.FC = () => {
             }}
           >
             <div>
-              <div 
-                className="w-10 h-10 rounded-xl flex items-center justify-center mb-5"
-                style={{
-                  backgroundColor: 'var(--gold-soft)',
-                  border: '1px solid var(--gold-border)',
-                  color: 'var(--gold)',
-                }}
-              >
-                <BookOpen className="w-5 h-5" />
-              </div>
-
-              <h4 
-                className="text-lg font-bold tracking-wide uppercase font-sans"
-                style={{ color: 'var(--text-primary)' }}
-              >
-                Chất Nam Bộ trong văn học
-              </h4>
-
-              <div className="mt-4 space-y-4 text-xs">
+              <div className="flex items-center gap-3 mb-3">
                 <div 
-                  className="p-3.5 rounded-lg"
+                  className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                   style={{
-                    backgroundColor: 'var(--bg-secondary)',
-                    border: '1px solid var(--border)',
+                    backgroundColor: 'var(--gold-soft)',
+                    border: '1px solid var(--gold-border)',
+                    color: 'var(--gold)',
                   }}
                 >
-                  <p className="font-semibold mb-1" style={{ color: 'var(--gold)' }}>Chiếc lược ngà:</p>
-                  <p className="italic" style={{ color: 'var(--text-secondary)' }}>
-                    &quot;Cây lược ngà ấy chưa chải được mái tóc của con, nhưng nó như gỡ rối được phần nào tâm trạng của anh.&quot;
-                  </p>
+                  <Newspaper className="w-5 h-5" />
                 </div>
-
-                <div 
-                  className="p-3.5 rounded-lg"
-                  style={{
-                    backgroundColor: 'var(--bg-secondary)',
-                    border: '1px solid var(--border)',
-                  }}
-                >
-                  <p className="font-semibold mb-1" style={{ color: 'var(--gold)' }}>Mùa gió chướng:</p>
-                  <p className="italic" style={{ color: 'var(--text-secondary)' }}>
-                    &quot;Gió chướng về mang theo cái lành lạnh của mùa khô, rạt rào trên những rặng dừa nước bát ngát...&quot;
-                  </p>
-                </div>
-
-                <div 
-                  className="p-3.5 rounded-lg"
-                  style={{
-                    backgroundColor: 'var(--bg-secondary)',
-                    border: '1px solid var(--border)',
-                  }}
-                >
-                  <p className="font-semibold mb-1" style={{ color: 'var(--gold)' }}>Cánh đồng hoang:</p>
-                  <p className="italic" style={{ color: 'var(--text-secondary)' }}>
-                    &quot;Giữa đầm lầy Đồng Tháp Mười mênh mông, tình yêu gia đình và ý chí kiên cường của con người Nam Bộ ngời sáng như đoá sen giữa lửa đạn.&quot;
-                  </p>
-                </div>
-
-                <div 
-                  className="p-3.5 rounded-lg"
-                  style={{
-                    backgroundColor: 'var(--bg-secondary)',
-                    border: '1px solid var(--border)',
-                  }}
-                >
-                  <p className="font-semibold mb-1" style={{ color: 'var(--gold)' }}>Văn phong Nam Bộ:</p>
-                  <p className="italic" style={{ color: 'var(--text-secondary)' }}>
-                    &quot;Văn chương Nguyễn Quang Sáng mộc mạc như hạt phù sa sông Tiền, hào sảng, trọng nghĩa tình và tha thiết với quê hương xứ sở.&quot;
-                  </p>
+                <div>
+                  <h4 
+                    className="text-base sm:text-lg font-bold tracking-wide uppercase font-sans"
+                    style={{ color: 'var(--text-primary)' }}
+                  >
+                    Các bài báo về Nguyễn Quang Sáng
+                  </h4>
+                  <span className="text-[11px] font-mono" style={{ color: 'var(--gold)' }}>
+                    05 bài viết tư liệu báo chí
+                  </span>
                 </div>
               </div>
+
+              <p 
+                className="text-xs font-light mb-4 leading-relaxed"
+                style={{ color: 'var(--text-secondary)' }}
+              >
+                Những bài viết tiêu biểu về cuộc đời, sự nghiệp và dấu ấn văn học của nhà văn.
+              </p>
+
+              <div className="space-y-2.5 text-xs">
+                {ARTICLES.map((article) => (
+                  <a
+                    key={article.id}
+                    href={article.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group block p-3 rounded-xl transition-all duration-300 border hover:translate-x-1 cursor-pointer"
+                    style={{
+                      backgroundColor: 'var(--bg-secondary)',
+                      borderColor: 'var(--border)',
+                    }}
+                    title={`Mở bài báo: ${article.title} (${article.source})`}
+                  >
+                    <div className="flex items-start justify-between gap-2.5">
+                      <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                        <div 
+                          className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors group-hover:scale-105"
+                          style={{
+                            backgroundColor: 'rgba(217, 119, 6, 0.12)',
+                            color: 'var(--gold)',
+                            border: '1px solid var(--gold-border)',
+                          }}
+                        >
+                          <Newspaper className="w-3.5 h-3.5" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <h5 
+                            className="font-semibold text-xs sm:text-[13px] leading-snug line-clamp-2 transition-colors group-hover:text-amber-400"
+                            style={{ color: 'var(--text-primary)' }}
+                          >
+                            {article.title}
+                          </h5>
+                          <div className="mt-1 flex items-center gap-2">
+                            <span 
+                              className="text-[11px] font-mono font-medium"
+                              style={{ color: 'var(--gold)' }}
+                            >
+                              Nguồn: {article.source}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div 
+                        className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0 text-zinc-400 group-hover:text-amber-400 group-hover:bg-amber-400/10 transition-colors"
+                      >
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div 
+              className="mt-5 pt-3 flex items-center justify-between text-[11px] font-mono"
+              style={{ borderTop: '1px solid var(--border)', color: 'var(--text-muted)' }}
+            >
+              <span>Liên kết báo chí chính thống</span>
+              <span className="flex items-center gap-1 text-amber-500/80">
+                <ExternalLink className="w-3 h-3" /> Mở tab mới
+              </span>
             </div>
           </div>
 
@@ -980,6 +1278,240 @@ export const ProjectShowcase: React.FC = () => {
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ==================================================
+          FULLSCREEN LIGHTBOX FOR 8 AUTHOR PHOTOS
+          ================================================== */}
+      {selectedAuthorPhotoIndex !== null && (
+        <div 
+          className="lightbox-modal animate-fadeIn"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Xem ảnh tư liệu tác giả Nguyễn Quang Sáng"
+          onClick={() => setSelectedAuthorPhotoIndex(null)}
+        >
+          {/* Top Bar with title and close button */}
+          <div 
+            className="w-full px-4 sm:px-6 py-3 flex items-center justify-between border-b border-white/10 bg-black/80 backdrop-blur-md z-[100001] shrink-0"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3">
+              <span 
+                className="text-xs font-mono font-bold tracking-wider px-2.5 py-1 rounded-full uppercase"
+                style={{
+                  backgroundColor: 'var(--gold-soft)',
+                  color: 'var(--gold)',
+                  border: '1px solid var(--gold-border)',
+                }}
+              >
+                Ảnh {String(selectedAuthorPhotoIndex + 1).padStart(2, '0')} / {String(AUTHOR_PHOTOS.length).padStart(2, '0')}
+              </span>
+              <span className="text-xs sm:text-sm font-serif italic text-slate-200 line-clamp-1 max-w-xs sm:max-w-lg">
+                {AUTHOR_PHOTOS[selectedAuthorPhotoIndex].title}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setSelectedAuthorPhotoIndex(null)}
+              className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/15 transition-colors cursor-pointer"
+              aria-label="Đóng ảnh"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Lightbox Stage */}
+          <div 
+            className="lightbox-stage"
+            onClick={() => setSelectedAuthorPhotoIndex(null)}
+          >
+            {/* Prev button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedAuthorPhotoIndex((prev) => 
+                  prev !== null ? (prev === 0 ? AUTHOR_PHOTOS.length - 1 : prev - 1) : null
+                );
+              }}
+              className="absolute left-3 sm:left-6 z-20 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-black/80 border border-white/15 text-white transition-transform hover:scale-110 active:scale-95 cursor-pointer shadow-lg"
+              aria-label="Ảnh trước"
+              title="Ảnh trước (←)"
+            >
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+
+            <img
+              key={`author-lightbox-${selectedAuthorPhotoIndex}`}
+              src={AUTHOR_PHOTOS[selectedAuthorPhotoIndex].url}
+              alt={AUTHOR_PHOTOS[selectedAuthorPhotoIndex].title}
+              decoding="async"
+              loading="eager"
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                if (e.currentTarget.src !== AUTHOR_PHOTOS[selectedAuthorPhotoIndex].directUrl) {
+                  e.currentTarget.src = AUTHOR_PHOTOS[selectedAuthorPhotoIndex].directUrl;
+                }
+              }}
+              className="lightbox-image rounded-xl sm:rounded-2xl select-none shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+
+            {/* Next button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedAuthorPhotoIndex((prev) => 
+                  prev !== null ? (prev === AUTHOR_PHOTOS.length - 1 ? 0 : prev + 1) : null
+                );
+              }}
+              className="absolute right-3 sm:right-6 z-20 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-black/80 border border-white/15 text-white transition-transform hover:scale-110 active:scale-95 cursor-pointer shadow-lg"
+              aria-label="Ảnh sau"
+              title="Ảnh sau (→)"
+            >
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+          </div>
+
+          {/* Bottom Caption Bar */}
+          <div 
+            className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3 z-[100000] flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left rounded-2xl bg-black/80 backdrop-blur-md border border-white/10 shadow-2xl mb-4 shrink-0"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-2">
+              <span className="text-xs sm:text-sm font-bold font-mono" style={{ color: 'var(--gold)' }}>
+                Nguyễn Quang Sáng
+              </span>
+              <span className="text-zinc-500 font-mono">·</span>
+              <span className="text-xs text-slate-300 font-sans line-clamp-1">
+                {AUTHOR_PHOTOS[selectedAuthorPhotoIndex].caption}
+              </span>
+            </div>
+            <span className="text-xs font-mono text-zinc-400 hidden sm:inline shrink-0">
+              Phím Esc để đóng · ← / → chuyển ảnh
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* ==================================================
+          FULLSCREEN LIGHTBOX FOR 7 WORKS PHOTOS
+          ================================================== */}
+      {selectedWorksPhotoIndex !== null && (
+        <div 
+          className="lightbox-modal animate-fadeIn"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Xem ảnh tư liệu tác phẩm & không gian văn học"
+          onClick={() => setSelectedWorksPhotoIndex(null)}
+        >
+          {/* Top Bar with title and close button */}
+          <div 
+            className="w-full px-4 sm:px-6 py-3 flex items-center justify-between border-b border-white/10 bg-black/80 backdrop-blur-md z-[100001] shrink-0"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3">
+              <span 
+                className="text-xs font-mono font-bold tracking-wider px-2.5 py-1 rounded-full uppercase"
+                style={{
+                  backgroundColor: 'var(--gold-soft)',
+                  color: 'var(--gold)',
+                  border: '1px solid var(--gold-border)',
+                }}
+              >
+                Tư liệu {String(selectedWorksPhotoIndex + 1).padStart(2, '0')} / {String(WORKS_PHOTOS.length).padStart(2, '0')}
+              </span>
+              <span className="text-xs sm:text-sm font-serif italic text-slate-200 line-clamp-1 max-w-xs sm:max-w-lg">
+                {WORKS_PHOTOS[selectedWorksPhotoIndex].title}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setSelectedWorksPhotoIndex(null)}
+              className="p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/15 transition-colors cursor-pointer"
+              aria-label="Đóng ảnh"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Lightbox Stage */}
+          <div 
+            className="lightbox-stage"
+            onClick={() => setSelectedWorksPhotoIndex(null)}
+          >
+            {/* Prev button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedWorksPhotoIndex((prev) => 
+                  prev !== null ? (prev === 0 ? WORKS_PHOTOS.length - 1 : prev - 1) : null
+                );
+              }}
+              className="absolute left-3 sm:left-6 z-20 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-black/80 border border-white/15 text-white transition-transform hover:scale-110 active:scale-95 cursor-pointer shadow-lg"
+              aria-label="Ảnh trước"
+              title="Ảnh trước (←)"
+            >
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+
+            <img
+              key={`works-lightbox-${selectedWorksPhotoIndex}`}
+              src={WORKS_PHOTOS[selectedWorksPhotoIndex].url}
+              alt={WORKS_PHOTOS[selectedWorksPhotoIndex].title}
+              decoding="async"
+              loading="eager"
+              referrerPolicy="no-referrer"
+              onError={(e) => {
+                if (e.currentTarget.src !== WORKS_PHOTOS[selectedWorksPhotoIndex].directUrl) {
+                  e.currentTarget.src = WORKS_PHOTOS[selectedWorksPhotoIndex].directUrl;
+                }
+              }}
+              className="lightbox-image rounded-xl sm:rounded-2xl select-none shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+
+            {/* Next button */}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedWorksPhotoIndex((prev) => 
+                  prev !== null ? (prev === WORKS_PHOTOS.length - 1 ? 0 : prev + 1) : null
+                );
+              }}
+              className="absolute right-3 sm:right-6 z-20 p-2.5 sm:p-3 rounded-full bg-black/60 hover:bg-black/80 border border-white/15 text-white transition-transform hover:scale-110 active:scale-95 cursor-pointer shadow-lg"
+              aria-label="Ảnh sau"
+              title="Ảnh sau (→)"
+            >
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+          </div>
+
+          {/* Bottom Caption Bar */}
+          <div 
+            className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3 z-[100000] flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left rounded-2xl bg-black/80 backdrop-blur-md border border-white/10 shadow-2xl mb-4 shrink-0"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-2">
+              <span className="text-xs sm:text-sm font-bold font-mono" style={{ color: 'var(--gold)' }}>
+                Không gian nghệ thuật &amp; Tác phẩm
+              </span>
+              <span className="text-zinc-500 font-mono">·</span>
+              <span className="text-xs text-slate-300 font-sans line-clamp-1">
+                {WORKS_PHOTOS[selectedWorksPhotoIndex].caption}
+              </span>
+            </div>
+            <span className="text-xs font-mono text-zinc-400 hidden sm:inline shrink-0">
+              Phím Esc để đóng · ← / → chuyển ảnh
+            </span>
           </div>
         </div>
       )}
