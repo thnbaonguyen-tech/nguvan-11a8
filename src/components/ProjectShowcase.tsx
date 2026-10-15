@@ -17,6 +17,12 @@ import {
 import namBoImage from '../assets/images/project_nam_bo_1790353109519.jpg';
 import { AUTHOR_PHOTOS } from '../config/authorPhotos';
 import { WORKS_PHOTOS } from '../config/worksPhotos';
+import essayPage03 from '../assets/images/essay-pages/essay-page-03.jpg';
+import essayPage04 from '../assets/images/essay-pages/essay-page-04.jpg';
+import essayPage05 from '../assets/images/essay-pages/essay-page-05.jpg';
+import essayPage06 from '../assets/images/essay-pages/essay-page-06.jpg';
+import essayPage07 from '../assets/images/essay-pages/essay-page-07.jpg';
+import essayPage08 from '../assets/images/essay-pages/essay-page-08.jpg';
 
 // ==================================================
 // 5 BÀI BÁO THẬT VỀ NHÀ VĂN NGUYỄN QUANG SÁNG
@@ -56,17 +62,66 @@ export const ARTICLES = [
 
 // ==================================================
 // DỮ LIỆU CÁC TRANG BÀI VIẾT TAY NGHỊ LUẬN VĂN HỌC 11A8
-// (Đúng 7 trang khổ đứng chuẩn A3 theo yêu cầu)
-// Khi có ảnh chụp thực tế, chỉ cần thay thế giá trị src=""
+// (Đúng 6 trang tư liệu viết tay thực tế: TRANG 03 đến TRANG 08)
 // ==================================================
-export const essayPages = [
-  { src: "", alt: "Bài viết Ngữ văn 11A8 - Trang 01" },
-  { src: "", alt: "Bài viết Ngữ văn 11A8 - Trang 02" },
-  { src: "", alt: "Bài viết Ngữ văn 11A8 - Trang 03" },
-  { src: "", alt: "Bài viết Ngữ văn 11A8 - Trang 04" },
-  { src: "", alt: "Bài viết Ngữ văn 11A8 - Trang 05" },
-  { src: "", alt: "Bài viết Ngữ văn 11A8 - Trang 06" },
-  { src: "", alt: "Bài viết Ngữ văn 11A8 - Trang 07" }
+export interface EssayPage {
+  id: string;
+  title: string;
+  pageNumber: string;
+  src: string;
+  directUrl: string;
+  alt: string;
+}
+
+export const essayPages: EssayPage[] = [
+  { 
+    id: 'page-03',
+    title: 'TRANG 03',
+    pageNumber: '03',
+    src: essayPage03,
+    directUrl: 'https://lh3.googleusercontent.com/d/1OKZ7czgbGeSS7I9sEmiNQ8ryiELsCRvl',
+    alt: 'Bài viết Ngữ văn 11A8 - TRANG 03'
+  },
+  { 
+    id: 'page-04',
+    title: 'TRANG 04',
+    pageNumber: '04',
+    src: essayPage04,
+    directUrl: 'https://lh3.googleusercontent.com/d/1Z66JUk5p9x_wxBsB8pX8HtxrpUm8hKag',
+    alt: 'Bài viết Ngữ văn 11A8 - TRANG 04'
+  },
+  { 
+    id: 'page-05',
+    title: 'TRANG 05',
+    pageNumber: '05',
+    src: essayPage05,
+    directUrl: 'https://lh3.googleusercontent.com/d/1UrPMmlT0bu01F0jhShZOqjNRCBVZJezh',
+    alt: 'Bài viết Ngữ văn 11A8 - TRANG 05'
+  },
+  { 
+    id: 'page-06',
+    title: 'TRANG 06',
+    pageNumber: '06',
+    src: essayPage06,
+    directUrl: 'https://lh3.googleusercontent.com/d/19mXjbgse3OvRQ30j2aZjDdDdyjJuRtj3',
+    alt: 'Bài viết Ngữ văn 11A8 - TRANG 06'
+  },
+  { 
+    id: 'page-07',
+    title: 'TRANG 07',
+    pageNumber: '07',
+    src: essayPage07,
+    directUrl: 'https://lh3.googleusercontent.com/d/1AgQzOJimB_k-9fAoyJAafvxT4pGTT_tf',
+    alt: 'Bài viết Ngữ văn 11A8 - TRANG 07'
+  },
+  { 
+    id: 'page-08',
+    title: 'TRANG 08',
+    pageNumber: '08',
+    src: essayPage08,
+    directUrl: 'https://lh3.googleusercontent.com/d/1pOnTDE1gJliLKuXq-ZKsM1SszZ9AwsB2',
+    alt: 'Bài viết Ngữ văn 11A8 - TRANG 08'
+  }
 ];
 
 export const ProjectShowcase: React.FC = () => {
@@ -817,7 +872,7 @@ export const ProjectShowcase: React.FC = () => {
               }}
             >
               <Feather className="w-3.5 h-3.5" />
-              <span>TRIỂN LÃM TƯ LIỆU BÀI VIẾT TAY · 07 TRANG</span>
+              <span>TRIỂN LÃM TƯ LIỆU BÀI VIẾT TAY · 06 TRANG</span>
             </div>
 
             <h3 
@@ -835,7 +890,7 @@ export const ProjectShowcase: React.FC = () => {
             </p>
           </div>
 
-          {/* Marquee A4 Gallery (5 Pages) */}
+          {/* Marquee A4 Gallery (6 Pages: TRANG 03 - TRANG 08) */}
           <div className="relative w-full overflow-hidden rounded-2xl py-3 mb-10">
             
             {/* Edge Fades: theme-adaptive */}
@@ -852,11 +907,10 @@ export const ProjectShowcase: React.FC = () => {
               }}
             />
 
-            {/* Marquee Track (duplicated 5x2 = 10 items for seamless infinite loop) */}
+            {/* Marquee Track (duplicated 6x2 = 12 items for seamless infinite loop) */}
             <div className="animate-essay-marquee flex items-center gap-5 sm:gap-7 py-3">
               {duplicatedPages.map((page, idx) => {
                 const originalIndex = idx % essayPages.length;
-                const pageNumberStr = String(originalIndex + 1).padStart(2, '0');
 
                 return (
                   <div 
@@ -875,96 +929,54 @@ export const ProjectShowcase: React.FC = () => {
                   >
                     {/* Physical A4 Sheet Container (210 : 297 ratio) */}
                     <div
-                      className="relative w-[210px] sm:w-[245px] md:w-[275px] rounded-lg overflow-hidden transition-all duration-300 transform group-hover:scale-[1.025]"
+                      className="relative w-[210px] sm:w-[245px] md:w-[275px] rounded-lg overflow-hidden transition-all duration-300 transform group-hover:scale-[1.025] shadow-md border"
                       style={{
                         aspectRatio: '210 / 297',
                         backgroundColor: 'var(--bg-surface)',
-                        border: '1px solid var(--border-card)',
-                        boxShadow: 'var(--shadow-sm)',
+                        borderColor: 'var(--border-card)',
                       }}
                     >
-                      {page.src ? (
-                        /* Original handwritten document image */
-                        <img
-                          src={page.src}
-                          alt={page.alt}
-                          loading="lazy"
-                          className="w-full h-full object-contain object-center rounded-lg"
-                        />
-                      ) : (
-                        /* Clean, neutral, intentional empty A4 paper slot */
-                        <div className="w-full h-full flex flex-col justify-between p-4 sm:p-5 select-none relative overflow-hidden bg-gradient-to-b from-transparent via-black/[0.01] to-black/[0.03] dark:via-white/[0.01] dark:to-white/[0.03]">
-                          
-                          {/* Simulated notebook ruling lines for authentic paper aesthetic */}
-                          <div className="absolute inset-x-5 top-12 bottom-12 flex flex-col justify-between pointer-events-none opacity-20 dark:opacity-10">
-                            {Array.from({ length: 11 }).map((_, lineIdx) => (
-                              <div 
-                                key={lineIdx} 
-                                className="w-full border-b"
-                                style={{ borderColor: 'var(--text-muted)' }}
-                              />
-                            ))}
-                          </div>
+                      {/* Original handwritten document image */}
+                      <img
+                        src={page.src}
+                        alt={page.alt}
+                        loading="lazy"
+                        decoding="async"
+                        onError={(e) => {
+                          if (page.directUrl && e.currentTarget.src !== page.directUrl) {
+                            e.currentTarget.src = page.directUrl;
+                          }
+                        }}
+                        className="w-full h-full object-cover object-top filter contrast-[1.03] brightness-[0.98] transition-transform duration-500 group-hover:scale-105"
+                      />
 
-                          {/* Top Page Header inside paper sheet */}
-                          <div className="relative z-10 flex items-center justify-between pb-2 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
-                            <span 
-                              className="text-[10px] font-mono tracking-widest uppercase font-semibold"
-                              style={{ color: 'var(--gold)' }}
-                            >
-                              NGỮ VĂN 11A8
-                            </span>
-                            <span 
-                              className="text-[10px] font-mono font-bold"
-                              style={{ color: 'var(--text-muted)' }}
-                            >
-                              #{pageNumberStr}
-                            </span>
-                          </div>
+                      {/* Top Corner Badge for Page Title */}
+                      <span 
+                        className="absolute top-2 left-2 text-[10px] font-mono font-bold px-2 py-0.5 rounded backdrop-blur-md shadow-md z-10"
+                        style={{
+                          backgroundColor: 'rgba(7, 11, 25, 0.85)',
+                          color: 'var(--gold)',
+                          border: '1px solid var(--gold-border)',
+                        }}
+                      >
+                        {page.title}
+                      </span>
 
-                          {/* Center document placeholder badge */}
-                          <div className="relative z-10 flex flex-col items-center text-center my-auto px-2">
-                            <div 
-                              className="w-11 h-11 rounded-xl flex items-center justify-center mb-3 transition-colors shadow-sm"
-                              style={{
-                                backgroundColor: 'var(--gold-soft)',
-                                border: '1px solid var(--gold-border)',
-                                color: 'var(--gold)',
-                              }}
-                            >
-                              <FileText className="w-5 h-5 opacity-80" />
-                            </div>
-                            <span 
-                              className="text-xs sm:text-sm font-serif font-bold tracking-tight uppercase"
-                              style={{ color: 'var(--text-primary)' }}
-                            >
-                              Trang {pageNumberStr}
-                            </span>
-                            <span 
-                              className="text-[10px] font-mono mt-1 opacity-70"
-                              style={{ color: 'var(--text-muted)' }}
-                            >
-                              Bản chụp A3 viết tay
-                            </span>
-                          </div>
-
-                          {/* Bottom subtle zoom hint */}
-                          <div className="relative z-10 flex items-center justify-center pt-2 border-t text-[10px] font-mono" style={{ borderColor: 'var(--border-subtle)', color: 'var(--gold)' }}>
-                            <span className="flex items-center gap-1 group-hover:underline">
-                              <Maximize2 className="w-3 h-3" />
-                              <span>Nhấp xem toàn màn hình</span>
-                            </span>
-                          </div>
-                        </div>
-                      )}
+                      {/* Hover Overlay Hint */}
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-3 backdrop-blur-[1px]">
+                        <span className="text-[10px] font-mono font-bold text-white uppercase tracking-wider bg-black/75 px-2.5 py-1.5 rounded-lg border border-white/20 flex items-center gap-1.5 shadow-lg">
+                          <Maximize2 className="w-3.5 h-3.5 text-amber-400" />
+                          <span>Phóng to bài viết</span>
+                        </span>
+                      </div>
                     </div>
 
                     {/* Page Label under each page */}
                     <span 
-                      className="mt-2.5 text-[11px] font-mono font-semibold tracking-widest uppercase transition-colors group-hover:text-amber-400"
-                      style={{ color: 'var(--text-muted)' }}
+                      className="mt-2.5 text-xs font-mono font-bold tracking-widest uppercase transition-colors group-hover:text-amber-400"
+                      style={{ color: 'var(--gold)' }}
                     >
-                      TRANG {pageNumberStr}
+                      {page.title}
                     </span>
                   </div>
                 );
@@ -1126,7 +1138,7 @@ export const ProjectShowcase: React.FC = () => {
             {/* Document Title & Page Indicator */}
             <div className="flex items-center gap-3">
               <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-full border border-amber-400/20">
-                Trang {String(selectedPageIndex + 1).padStart(2, '0')} / {String(essayPages.length).padStart(2, '0')}
+                {essayPages[selectedPageIndex].title} ({selectedPageIndex + 1} / {essayPages.length})
               </span>
               <span className="hidden sm:inline text-xs text-slate-300 font-serif italic truncate max-w-sm">
                 {essayPages[selectedPageIndex].alt}
@@ -1220,6 +1232,11 @@ export const ProjectShowcase: React.FC = () => {
                 <img
                   src={essayPages[selectedPageIndex].src}
                   alt={essayPages[selectedPageIndex].alt}
+                  onError={(e) => {
+                    if (essayPages[selectedPageIndex].directUrl && e.currentTarget.src !== essayPages[selectedPageIndex].directUrl) {
+                      e.currentTarget.src = essayPages[selectedPageIndex].directUrl;
+                    }
+                  }}
                   className="w-full h-full object-contain object-center"
                 />
               ) : (

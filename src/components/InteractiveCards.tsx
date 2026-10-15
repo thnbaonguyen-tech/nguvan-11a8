@@ -680,6 +680,219 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({ item }) => {
   );
 };
 
+// ==================================================
+// DEDICATED PROMINENT CARD FOR AUTHOR VIDEOS (PHẦN 2)
+// Designed with luxury gold accents, expansive layout and rich literary notes
+// ==================================================
+interface AuthorSpecialCardProps {
+  item: ProjectLinkItem;
+}
+
+const AuthorSpecialCard: React.FC<AuthorSpecialCardProps> = ({ item }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const destinationUrl = getSafeUrl(item.url);
+  const isAiVersion = item.order === 9;
+  const thumbImage = isAiVersion ? thumbTacGia : thumbTacGiaThat;
+
+  const handleOpen = () => {
+    window.open(destinationUrl, '_blank', 'noopener,noreferrer');
+  };
+
+  return (
+    <div
+      tabIndex={0}
+      role="region"
+      aria-label={`Video về tác giả: ${item.title}`}
+      onClick={handleOpen}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleOpen();
+        }
+      }}
+      className="group relative flex flex-col justify-between rounded-2xl overflow-hidden transition-all duration-400 transform hover:-translate-y-2 cursor-pointer shadow-xl"
+      style={{
+        backgroundColor: 'var(--bg-card)',
+        border: '1.5px solid var(--gold-border)',
+        boxShadow: isHovered
+          ? '0 20px 45px -10px rgba(217, 119, 6, 0.35)'
+          : 'var(--shadow)',
+      }}
+    >
+      {/* Top illuminated gold highlight accent line */}
+      <div 
+        className="absolute top-0 inset-x-0 h-[3px] transition-opacity duration-300 z-30 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to right, transparent, var(--gold), transparent)',
+          opacity: isHovered ? 1 : 0.7,
+        }}
+      />
+
+      {/* Top Banner Tag: Distinctive Badge */}
+      <div 
+        className="px-4 py-2.5 flex items-center justify-between border-b backdrop-blur-md"
+        style={{
+          backgroundColor: isAiVersion ? 'rgba(147, 51, 234, 0.08)' : 'rgba(16, 185, 129, 0.08)',
+          borderColor: 'var(--border)',
+        }}
+      >
+        <div className="flex items-center gap-2">
+          <span 
+            className="w-2 h-2 rounded-full animate-ping"
+            style={{ backgroundColor: isAiVersion ? '#c084fc' : '#34d399' }}
+          />
+          <span 
+            className="text-[11px] sm:text-xs font-mono font-bold tracking-wider uppercase"
+            style={{ color: isAiVersion ? '#c084fc' : '#34d399' }}
+          >
+            {isAiVersion ? 'PHIÊN BẢN PHỤC DỰNG AI ĐỘC QUYỀN' : 'THƯỚC PHIM TƯ LIỆU THẬT'}
+          </span>
+        </div>
+        <span 
+          className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border"
+          style={{
+            backgroundColor: 'var(--gold-soft)',
+            borderColor: 'var(--gold-border)',
+            color: 'var(--gold)',
+          }}
+        >
+          {isAiVersion ? 'AUDIO KỊCH TRUYỀN THANH' : 'TƯ LIỆU THỰC TẾ'}
+        </span>
+      </div>
+
+      {/* 16:9 Editorial Video Thumbnail */}
+      <div className="relative w-full aspect-video overflow-hidden select-none bg-black">
+        <img
+          src={thumbImage}
+          alt={item.title}
+          loading="lazy"
+          referrerPolicy="no-referrer"
+          className="w-full h-full object-cover object-center filter contrast-[1.05] brightness-[0.92] group-hover:brightness-[1.02] group-hover:scale-105 transition-all duration-500 ease-out"
+        />
+
+        {/* Vintage Film Overlay & Vignette */}
+        <div 
+          className="absolute inset-0 transition-opacity duration-300"
+          style={{ background: 'var(--overlay-gradient)' }}
+        />
+        <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_45px_rgba(0,0,0,0.6)]" />
+
+        {/* Center Hover Play Button Circle */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div
+            className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-400 transform ${
+              isHovered
+                ? 'scale-110 shadow-[0_0_30px_rgba(245,158,11,0.6)]'
+                : 'scale-95'
+            }`}
+            style={{
+              backgroundColor: isHovered ? 'var(--gold)' : 'rgba(7, 11, 25, 0.75)',
+              color: isHovered ? '#FFFFFF' : 'var(--gold)',
+              border: isHovered ? 'none' : '1.5px solid var(--gold-border)',
+            }}
+          >
+            <Play className="w-6 h-6 ml-0.5 fill-current" />
+          </div>
+        </div>
+
+        {/* Bottom Bar inside Thumbnail */}
+        <div className="absolute bottom-3 inset-x-3 z-10 flex items-end justify-between pointer-events-none">
+          <span className="text-[11px] text-white font-mono font-medium drop-shadow-md bg-black/60 px-2 py-0.5 rounded backdrop-blur-sm">
+            {isAiVersion ? 'Giọng đọc AI & Công nghệ số' : 'Tư liệu quý & Giọng đọc truyền cảm'}
+          </span>
+          <span 
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold font-mono tracking-wider uppercase backdrop-blur-md"
+            style={{
+              backgroundColor: isHovered ? 'var(--gold)' : 'rgba(0,0,0,0.7)',
+              color: isHovered ? '#FFFFFF' : 'var(--gold)',
+              border: isHovered ? 'none' : '1px solid var(--gold-border)',
+            }}
+          >
+            <span>{isHovered ? 'XEM VIDEO' : 'PHÁT TRÊN YOUTUBE'}</span>
+            <ExternalLink className="w-3 h-3" />
+          </span>
+        </div>
+      </div>
+
+      {/* Card Details / Body */}
+      <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <span 
+              className="text-xs font-mono font-bold tracking-widest px-2.5 py-0.5 rounded"
+              style={{
+                backgroundColor: 'var(--gold-soft)',
+                color: 'var(--gold)',
+                border: '1px solid var(--gold-border)',
+              }}
+            >
+              TƯ LIỆU {String(item.order).padStart(2, '0')}
+            </span>
+            <span 
+              className="text-xs font-mono"
+              style={{ color: 'var(--text-muted)' }}
+            >
+              {item.description}
+            </span>
+          </div>
+
+          <h4 
+            className="text-lg sm:text-xl font-bold tracking-tight transition-colors font-display mt-2 group-hover:text-amber-400"
+            style={{ color: 'var(--text-primary)' }}
+          >
+            {item.title}
+          </h4>
+
+          <p 
+            className="mt-2 text-xs sm:text-sm font-serif italic leading-relaxed"
+            style={{ color: 'var(--gold)' }}
+          >
+            “{item.tagline}”
+          </p>
+
+          {item.literaryNote && (
+            <p 
+              className="mt-3 text-xs leading-relaxed p-3 rounded-xl font-light"
+              style={{
+                backgroundColor: 'var(--bg-secondary)',
+                border: '1px solid var(--border)',
+                color: 'var(--text-secondary)',
+              }}
+            >
+              {item.literaryNote}
+            </p>
+          )}
+        </div>
+
+        {/* Action Button Bar */}
+        <div 
+          className="mt-5 pt-4 flex items-center justify-between gap-3"
+          style={{ borderTop: '1px solid var(--border)' }}
+        >
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-[11px] font-semibold tracking-wider text-red-500 bg-red-500/10 border border-red-500/20">
+            <Film className="w-3.5 h-3.5" />
+            <span>YOUTUBE</span>
+          </span>
+
+          <div 
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold tracking-wider uppercase transition-all duration-300 shadow-md group-hover:scale-105"
+            style={{
+              backgroundColor: 'var(--gold)',
+              color: '#070b19',
+            }}
+          >
+            <Play className="w-3.5 h-3.5 fill-current" />
+            <span>Xem video</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => {
   // Ensure the video cards (order 1 through 10)
   const tenLinks = useMemo(() => {
@@ -688,64 +901,15 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
       .sort((a, b) => a.order - b.order);
   }, [links]);
 
-  // Active theme filter: 'all' | 'tac-pham' | 'chuyen-de' | 'tu-lieu'
-  const [activeFilter, setActiveFilter] = useState<'all' | 'tac-pham' | 'chuyen-de' | 'tu-lieu'>('all');
+  // Phần 1: Các video trích đoạn tác phẩm (Order 1 đến 8)
+  const workVideos = useMemo(() => {
+    return tenLinks.filter((l) => l.order >= 1 && l.order <= 8);
+  }, [tenLinks]);
 
-  // Helper to determine the category for a link
-  const getCategory = (l: ProjectLinkItem) => {
-    if (l.exhibitionCategory) return l.exhibitionCategory;
-    if (l.order <= 4 || l.order === 8) return 'tac-pham';
-    if (l.order >= 5 && l.order <= 7) return 'chuyen-de';
-    return 'tu-lieu';
-  };
-
-  const tacPhamLinks = useMemo(() => tenLinks.filter((l) => getCategory(l) === 'tac-pham'), [tenLinks]);
-  const chuyenDeLinks = useMemo(() => tenLinks.filter((l) => getCategory(l) === 'chuyen-de'), [tenLinks]);
-  const tuLieuLinks = useMemo(() => tenLinks.filter((l) => getCategory(l) === 'tu-lieu'), [tenLinks]);
-
-  const filteredLinks = useMemo(() => {
-    if (activeFilter === 'tac-pham') return tacPhamLinks;
-    if (activeFilter === 'chuyen-de') return chuyenDeLinks;
-    if (activeFilter === 'tu-lieu') return tuLieuLinks;
-    return tenLinks;
-  }, [activeFilter, tenLinks, tacPhamLinks, chuyenDeLinks, tuLieuLinks]);
-
-  // Helper to dynamically calculate continuous number ranges (e.g., '01–04, 08', '05–07', '09–10')
-  const formatOrderRanges = (items: ProjectLinkItem[]): string => {
-    if (!items || items.length === 0) return '0';
-    const orders = items.map((item) => item.order).sort((a, b) => a - b);
-    const ranges: string[] = [];
-    let start = orders[0];
-    let prev = orders[0];
-
-    for (let i = 1; i < orders.length; i++) {
-      const curr = orders[i];
-      if (curr === prev + 1) {
-        prev = curr;
-      } else {
-        if (start === prev) {
-          ranges.push(String(start).padStart(2, '0'));
-        } else {
-          ranges.push(`${String(start).padStart(2, '0')}–${String(prev).padStart(2, '0')}`);
-        }
-        start = curr;
-        prev = curr;
-      }
-    }
-
-    if (start === prev) {
-      ranges.push(String(start).padStart(2, '0'));
-    } else {
-      ranges.push(`${String(start).padStart(2, '0')}–${String(prev).padStart(2, '0')}`);
-    }
-
-    return ranges.join(', ');
-  };
-
-  const tacPhamRange = formatOrderRanges(tacPhamLinks);
-  const chuyenDeRange = formatOrderRanges(chuyenDeLinks);
-  const tuLieuRange = formatOrderRanges(tuLieuLinks);
-
+  // Phần 2: Hai video về tác giả Nguyễn Quang Sáng (Order 9 & 10)
+  const authorVideos = useMemo(() => {
+    return tenLinks.filter((l) => l.order === 9 || l.order === 10);
+  }, [tenLinks]);
 
   return (
     <section id="links" className="relative py-20 lg:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
@@ -860,7 +1024,7 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
               }}
             >
               <Layers className="w-3.5 h-3.5 text-sky-500 dark:text-sky-400" />
-              <span>Hệ thống 10 tư liệu tương tác</span>
+              <span>Hệ thống 10 video tư liệu</span>
             </span>
           </div>
         </div>
@@ -880,117 +1044,140 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
       </div>
 
       {/* ==================================================
-          SECTION HEADER & CURATED THEME OVERVIEW
+          PHẦN 1 — VIDEO TRÍCH ĐOẠN TÁC PHẨM
+          Chứa toàn bộ các video trích đoạn tác phẩm của Nguyễn Quang Sáng (01-08)
           ================================================== */}
-      <div className="mb-10 sm:mb-12">
-        <div 
-          className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6"
-          style={{ borderBottom: '1px solid var(--border)' }}
-        >
-          <div>
-            <div 
-              className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest font-semibold mb-2"
-              style={{ color: 'var(--gold)' }}
-            >
-              <span>TRIỂN LÃM SỐ NGUYỄN QUANG SÁNG</span>
-              <span>·</span>
-              <span>10 TƯ LIỆU ĐIỆN ẢNH &amp; VĂN HỌC</span>
+      <div id="video-trich-doan" className="mb-20 sm:mb-24">
+        {/* Header Section 1 */}
+        <div className="mb-10 sm:mb-12">
+          <div 
+            className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6"
+            style={{ borderBottom: '1px solid var(--border)' }}
+          >
+            <div>
+              <div 
+                className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest font-semibold mb-2"
+                style={{ color: 'var(--gold)' }}
+              >
+                <Film className="w-3.5 h-3.5" />
+                <span>PHẦN 1 · TRIỂN LÃM ĐIỆN ẢNH &amp; VĂN HỌC</span>
+                <span>·</span>
+                <span>{workVideos.length} TRÍCH ĐOẠN</span>
+              </div>
+              <h3 
+                className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight uppercase font-display"
+                style={{ color: 'var(--text-primary)' }}
+              >
+                VIDEO TRÍCH ĐOẠN TÁC PHẨM
+              </h3>
+              <p 
+                className="mt-2 text-sm sm:text-base font-serif italic max-w-2xl"
+                style={{ color: 'var(--text-secondary)' }}
+              >
+                Những trích đoạn tiêu biểu từ các tác phẩm của Nguyễn Quang Sáng
+              </p>
             </div>
-            <h3 
-              className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight uppercase font-display"
-              style={{ color: 'var(--text-primary)' }}
-            >
-              BỘ SƯU TẬP 10 TƯ LIỆU CHỌN LỌC
-            </h3>
-            <p 
-              className="mt-2 text-sm sm:text-base font-serif italic max-w-2xl"
-              style={{ color: 'var(--text-secondary)' }}
-            >
-              {`Hệ thống ${tenLinks.length} tư liệu số được tổ chức theo 3 chuyên đề: Tác phẩm & Điện ảnh (${tacPhamRange}), Video & Chuyên đề (${chuyenDeRange}), và Tư liệu tác giả – 11A8 (${tuLieuRange} gồm Bản AI & Bản Thật).`}
-            </p>
+
+            {/* Museum Gold Badge Detail */}
+            <div className="flex items-center gap-3">
+              <span 
+                className="px-4 py-1.5 rounded-full text-xs font-mono font-semibold tracking-wider uppercase backdrop-blur-md shadow-sm"
+                style={{
+                  backgroundColor: 'var(--gold-soft)',
+                  border: '1px solid var(--gold-border)',
+                  color: 'var(--gold)',
+                }}
+              >
+                08 VIDEO CHỌN LỌC
+              </span>
+            </div>
           </div>
 
-          {/* Theme Filters / Quick Navigation */}
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              onClick={() => setActiveFilter('all')}
-              type="button"
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
-                activeFilter === 'all'
-                  ? 'shadow-md scale-105'
-                  : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
-              }`}
-              style={
-                activeFilter === 'all'
-                  ? { backgroundColor: 'var(--gold)', color: '#070b19' }
-                  : { color: 'var(--text-secondary)' }
-              }
-            >
-              TẤT CẢ ({tenLinks.length})
-            </button>
-            <button
-              onClick={() => setActiveFilter('tac-pham')}
-              type="button"
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
-                activeFilter === 'tac-pham'
-                  ? 'shadow-md scale-105'
-                  : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
-              }`}
-              style={
-                activeFilter === 'tac-pham'
-                  ? { backgroundColor: 'var(--gold)', color: '#070b19' }
-                  : { color: 'var(--text-secondary)' }
-              }
-            >
-              01 · TÁC PHẨM &amp; ĐIỆN ẢNH ({tacPhamRange})
-            </button>
-            <button
-              onClick={() => setActiveFilter('chuyen-de')}
-              type="button"
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
-                activeFilter === 'chuyen-de'
-                  ? 'shadow-md scale-105'
-                  : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
-              }`}
-              style={
-                activeFilter === 'chuyen-de'
-                  ? { backgroundColor: 'var(--gold)', color: '#070b19' }
-                  : { color: 'var(--text-secondary)' }
-              }
-            >
-              02 · VIDEO &amp; CHUYÊN ĐỀ ({chuyenDeRange})
-            </button>
-            <button
-              onClick={() => setActiveFilter('tu-lieu')}
-              type="button"
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
-                activeFilter === 'tu-lieu'
-                  ? 'shadow-md scale-105'
-                  : 'bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10'
-              }`}
-              style={
-                activeFilter === 'tu-lieu'
-                  ? { backgroundColor: 'var(--gold)', color: '#070b19' }
-                  : { color: 'var(--text-secondary)' }
-              }
-            >
-              03 · TƯ LIỆU TÁC GIẢ – 11A8
-            </button>
-          </div>
+          {/* Golden Museum Exhibition Line Accent */}
+          <div 
+            className="relative h-0.5 w-full mt-0.5" 
+            style={{ background: 'linear-gradient(to right, var(--gold), rgba(217, 119, 6, 0.4), transparent)' }} 
+          />
+        </div>
+
+        {/* Grid 8 Video Cards: Exact cards, thumbnails, titles, buttons & layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {workVideos.map((item) => (
+            <ResourceCard key={item.id} item={item} />
+          ))}
         </div>
       </div>
 
+      {/* ==================================================
+          LITERARY GOLD DIVIDER: TRANSITION TO AUTHOR SECTION
+          ================================================== */}
+      <div className="my-16 sm:my-24 relative flex items-center justify-center">
+        <div 
+          className="absolute inset-x-0 h-px" 
+          style={{ background: 'linear-gradient(to right, transparent, var(--border), var(--gold-border), var(--border), transparent)' }} 
+        />
+        <div 
+          className="relative z-10 px-6 py-2 rounded-full text-xs font-mono font-semibold tracking-widest uppercase flex items-center gap-3 backdrop-blur-md shadow-lg"
+          style={{
+            backgroundColor: 'var(--bg-surface)',
+            border: '1.5px solid var(--gold-border)',
+            color: 'var(--gold)',
+          }}
+        >
+          <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+          <span>KHÔNG GIAN TƯ LIỆU TÁC GIẢ</span>
+          <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+        </div>
+      </div>
 
       {/* ==================================================
-          THE 3 × 3 SYMMETRICAL GRID: EXACTLY 9 CARDS
-          Desktop: 3 cols (Row 1: 01-03, Row 2: 04-06, Row 3: 07-09)
-          Tablet: 2 cols
-          Mobile: 1 col
+          PHẦN 2 — VIDEO VỀ NGUYỄN QUANG SÁNG
+          CHỈ chứa 2 video về tác giả Nguyễn Quang Sáng (09 & 10)
+          Trình bày nổi bật hơn các video khác
           ================================================== */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-        {filteredLinks.map((item) => (
-          <ResourceCard key={item.id} item={item} />
-        ))}
+      <div id="video-tac-gia" className="mb-20 sm:mb-24">
+        {/* Header Section 2 */}
+        <div className="mb-10 sm:mb-14 text-center max-w-3xl mx-auto">
+          <div 
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono uppercase tracking-widest font-semibold mb-3 backdrop-blur-md shadow-sm"
+            style={{
+              backgroundColor: 'var(--gold-soft)',
+              border: '1px solid var(--gold-border)',
+              color: 'var(--gold)',
+            }}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <span>PHẦN 2 · TƯ LIỆU TÁC GIẢ · 11A8</span>
+          </div>
+
+          <h3 
+            className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight uppercase font-display"
+            style={{ color: 'var(--text-primary)' }}
+          >
+            VIDEO VỀ NGUYỄN QUANG SÁNG
+          </h3>
+
+          <p 
+            className="mt-3 text-sm sm:text-base font-serif italic max-w-2xl mx-auto leading-relaxed"
+            style={{ color: 'var(--text-secondary)' }}
+          >
+            Khám phá cuộc đời, sự nghiệp và dấu ấn sáng tác của nhà văn Nguyễn Quang Sáng
+          </p>
+
+          {/* Museum Gold Line with diamond accent */}
+          <div className="flex items-center justify-center gap-2 mt-4">
+            <div className="w-16 sm:w-24 h-0.5 rounded-full" style={{ background: 'linear-gradient(to right, transparent, var(--gold))' }} />
+            <span className="w-2 h-2 rotate-45 rounded-[1px]" style={{ backgroundColor: 'var(--gold)' }} />
+            <div className="w-16 sm:w-24 h-0.5 rounded-full" style={{ background: 'linear-gradient(to left, transparent, var(--gold))' }} />
+          </div>
+        </div>
+
+        {/* 2 Special Featured Video Cards (Large, Highly Prominent, Luxury Gold Accent) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-7 lg:gap-8 max-w-5xl mx-auto">
+          {authorVideos.map((item) => (
+            <AuthorSpecialCard key={item.id} item={item} />
+          ))}
+        </div>
       </div>
 
       {/* ==================================================
@@ -1033,3 +1220,4 @@ export const InteractiveCards: React.FC<InteractiveCardsProps> = ({ links }) => 
     </section>
   );
 };
+

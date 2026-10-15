@@ -21,21 +21,54 @@ export const Header: React.FC<HeaderProps> = ({ isDarkMode = true, onToggleTheme
   const navLinks = [
     { label: 'TRANG CHỦ', href: '#hero' },
     { label: 'TƯ LIỆU', href: '#links' },
-    { label: 'KHOẢNH KHẮC', href: '#khoanh-khac' },
-    { label: 'GIỚI THIỆU', href: '#about' },
     { label: 'DỰ ÁN', href: '#project' },
+    { label: 'KHOẢNH KHẮC', href: '#khoanh-khac' },
+    { label: 'CHUYỂN ĐỔI SỐ', href: '#about' },
     { label: 'MÃ QR', href: '#qr-code' },
   ];
+
+  const scrollToTarget = (id: string) => {
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    if (id === 'hero') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    // Get current sticky header height (base height without drawer)
+    const headerEl = document.querySelector('header');
+    const headerHeight = headerEl ? Math.min(headerEl.offsetHeight, 80) : 64;
+    
+    // Accurate absolute top calculation
+    const currentScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+    const elementRect = element.getBoundingClientRect();
+    const absoluteTop = elementRect.top + currentScrollY;
+    
+    // Offset with breathing room so section title is clearly visible at top of viewport
+    const targetY = Math.max(0, absoluteTop - headerHeight - 16);
+
+    window.scrollTo({
+      top: targetY,
+      behavior: 'smooth',
+    });
+  };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href.startsWith('#')) {
       e.preventDefault();
       const id = href.slice(1);
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+
+      if (mobileMenuOpen) {
+        // 1. Close mobile drawer first so page layout stabilizes
+        setMobileMenuOpen(false);
+        // 2. Wait for React render cycle & drawer collapse before measuring/scrolling
+        setTimeout(() => {
+          scrollToTarget(id);
+        }, 60);
+      } else {
+        scrollToTarget(id);
       }
-      setMobileMenuOpen(false);
     }
   };
 

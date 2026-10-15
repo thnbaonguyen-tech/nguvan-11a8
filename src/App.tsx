@@ -148,16 +148,16 @@ export default function App() {
             onOpenConfig={() => setIsConfigOpen(true)} 
           />
 
-          {/* 3. Phần Khoảnh Khắc 11A8 - HÌNH ẢNH HOẠT ĐỘNG NHÓM & CHUẨN BỊ TƯ LIỆU */}
-          <MomentsGallery />
-
-          {/* 4. Phần Giới Thiệu Nhóm - VỀ DỰ ÁN TẬP THỂ 11A8 */}
-          <AboutGroup />
-
-          {/* 4. Phần Dự Án - DỰ ÁN NGỮ VĂN 11A8 & Nguyễn Quang Sáng */}
+          {/* 3. Phần Dự Án: [1. DỰ ÁN NGỮ VĂN 11A8] & [2. NGHỊ LUẬN VĂN HỌC] */}
           <ProjectShowcase />
 
-          {/* 5. Phần QR Code - SCAN TO EXPLORE */}
+          {/* 4. Phần Khoảnh Khắc 11A8: [3. KHOẢNH KHẮC 11A8] */}
+          <MomentsGallery />
+
+          {/* 5. Phần Định hướng Chuyển đổi số: [4. ĐỊNH HƯỚNG CHUYỂN ĐỔI SỐ] */}
+          <AboutGroup />
+
+          {/* 6. Phần QR Code - SCAN TO EXPLORE */}
           <QRCodeSection 
             customQrImage={customQrImage} 
             onUpdateQrImage={handleUpdateQrImage} 

@@ -94,6 +94,40 @@
   }
 }
 
+/* ==================================================
+   SCROLL MARGIN TOP FOR SECTION ANCHORS
+   Ensures sticky header never obscures section headings on desktop or mobile
+   ================================================== */
+html {
+  scroll-behavior: smooth;
+}
+
+#hero,
+#links,
+#project,
+#khoanh-khac,
+#about,
+#qr-code,
+#video-trich-doan,
+#video-tac-gia,
+#tieu-su-tac-gia {
+  scroll-margin-top: 84px;
+}
+
+@media (max-width: 768px) {
+  #hero,
+  #links,
+  #project,
+  #khoanh-khac,
+  #about,
+  #qr-code,
+  #video-trich-doan,
+  #video-tac-gia,
+  #tieu-su-tac-gia {
+    scroll-margin-top: 72px;
+  }
+}
+
 /* --------------------------------------------------
    GLOBAL SMOOTH THEME TRANSITION
    Do NOT animate layout dimensions or images!
